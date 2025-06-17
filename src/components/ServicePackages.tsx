@@ -98,20 +98,6 @@ const ServicePackages = () => {
                 transition: { duration: 0.3 }
               }}
             >
-              {/* Car Image */}
-              <motion.div 
-                className="mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                <img 
-                  src={selectedPackage.heroImage} 
-                  alt={selectedPackage.title}
-                  className="w-full h-64 object-cover rounded-eco"
-                />
-              </motion.div>
-
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 {/* Package Info */}
                 <div>
