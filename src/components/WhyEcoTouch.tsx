@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Leaf, Shield, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -48,8 +47,7 @@ const cardVariants = {
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.6,
-      ease: "easeOut",
+      duration: 0.6
     },
   },
 };

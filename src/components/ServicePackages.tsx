@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Check, Car, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,7 +13,7 @@ const ServicePackages = () => {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" }
+      transition: { duration: 0.5 }
     },
     exit: { 
       opacity: 0, 
@@ -30,8 +29,7 @@ const ServicePackages = () => {
       x: 0,
       transition: {
         delay: i * 0.1,
-        duration: 0.4,
-        ease: "easeOut"
+        duration: 0.4
       }
     })
   };
