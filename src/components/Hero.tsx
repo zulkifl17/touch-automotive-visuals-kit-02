@@ -95,10 +95,10 @@ const Hero = () => {
             {/* Hero Content */}
             <Reveal delay={300}>
               <h2 className="eco-text-h2 text-eco-white mb-6">
-                Premium Automotive Care
+                Premium Eco-Friendly Automotive Care in Sri Lanka
               </h2>
               <p className="text-xl text-gray-300 mb-8">
-                Experience the future of eco-friendly vehicle maintenance with our premium OEM products and WÜRTH partnerships.
+                Experience professional vehicle maintenance with our premium OEM products, WÜRTH partnerships, and sustainable practices. Serving Toyota C-HR, Aqua, and premium vehicles across Colombo.
               </p>
               
               {/* CTA Buttons */}
@@ -114,6 +114,7 @@ const Hero = () => {
                     transition: { duration: 0.2 }
                   }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={() => window.location.href = '/booking'}
                 >
                   Book Service Now
                   <ArrowRight className="inline-block ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -126,6 +127,7 @@ const Hero = () => {
                     transition: { duration: 0.2 }
                   }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={() => window.location.href = '/packages'}
                 >
                   View Service Packages
                 </motion.button>
@@ -157,7 +159,7 @@ const Hero = () => {
               >
                 <div className="eco-text-price text-eco-green">100%</div>
                 <p className="text-gray-400 text-sm">Eco-Friendly</p>
-              </motion.div>
+              </div>
             </Reveal>
           </div>
 
@@ -173,6 +175,7 @@ const Hero = () => {
                 frameBorder="0"
                 allowFullScreen={true}
                 allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                title="ECO TOUCH Premium Automotive Care Services"
               ></iframe>
             </div>
           </Reveal>
@@ -197,6 +200,7 @@ const Hero = () => {
                 frameBorder="0"
                 allowFullScreen={true}
                 allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                title="ECO TOUCH Premium Automotive Care Services"
               ></iframe>
             </div>
           </div>
