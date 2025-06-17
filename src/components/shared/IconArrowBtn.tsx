@@ -1,13 +1,14 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface IconArrowBtnProps {
   children: React.ReactNode;
   type?: 'button' | 'submit';
   onClick?: () => void;
   variant?: 'primary' | 'secondary';
+  direction?: 'left' | 'right';
   className?: string;
 }
 
@@ -16,8 +17,11 @@ export const IconArrowBtn: React.FC<IconArrowBtnProps> = ({
   type = 'button', 
   onClick, 
   variant = 'primary',
+  direction = 'right',
   className = ''
 }) => {
+  const ArrowIcon = direction === 'left' ? ArrowLeft : ArrowRight;
+  
   return (
     <motion.button
       type={type}
@@ -26,12 +30,12 @@ export const IconArrowBtn: React.FC<IconArrowBtnProps> = ({
         variant === 'primary' 
           ? 'eco-btn-primary' 
           : 'eco-btn-secondary'
-      } ${className}`}
+      } ${direction === 'left' ? 'flex-row-reverse space-x-reverse' : ''} ${className}`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
       <span>{children}</span>
-      <ArrowRight size={18} />
+      <ArrowIcon size={18} />
     </motion.button>
   );
 };

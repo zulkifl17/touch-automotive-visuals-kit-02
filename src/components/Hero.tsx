@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -167,14 +166,13 @@ const Hero = () => {
           <Reveal delay={900} className="hidden lg:block">
             <div className="rounded-eco overflow-hidden">
               <iframe
-                src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Fecotouch.lk%2Fvideos%2F1060952871627229%2F&show_text=false&width=267&t=0"
+                src="https://www.youtube.com/embed/hX2xVO4FE4s"
                 width="100%"
                 height="400"
                 style={{ border: 'none', overflow: 'hidden' }}
-                scrolling="no"
                 frameBorder="0"
                 allowFullScreen={true}
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 title="ECO TOUCH Premium Automotive Care Services"
               ></iframe>
             </div>
@@ -192,14 +190,13 @@ const Hero = () => {
             />
             <div className="rounded-eco overflow-hidden">
               <iframe
-                src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Fecotouch.lk%2Fvideos%2F1060952871627229%2F&show_text=false&width=267&t=0"
+                src="https://www.youtube.com/embed/hX2xVO4FE4s"
                 width="100%"
                 height="300"
                 style={{ border: 'none', overflow: 'hidden' }}
-                scrolling="no"
                 frameBorder="0"
                 allowFullScreen={true}
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 title="ECO TOUCH Premium Automotive Care Services"
               ></iframe>
             </div>

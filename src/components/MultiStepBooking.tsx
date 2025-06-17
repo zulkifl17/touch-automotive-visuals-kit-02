@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -335,6 +334,7 @@ Please confirm this booking. Thank you!`;
                         type="button"
                         onClick={prevStep}
                         variant="secondary"
+                        direction="left"
                       >
                         Previous
                       </IconArrowBtn>
@@ -411,6 +411,7 @@ Please confirm this booking. Thank you!`;
                         type="button"
                         onClick={prevStep}
                         variant="secondary"
+                        direction="left"
                       >
                         Previous
                       </IconArrowBtn>
