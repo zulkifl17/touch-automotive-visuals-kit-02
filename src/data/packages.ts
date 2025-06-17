@@ -51,4 +51,26 @@ export const PACKAGE_AQUA: ServicePackage = {
   ],
 };
 
-export const SERVICE_PACKAGES = [PACKAGE_CHR, PACKAGE_AQUA];
+// Extended structure for the booking form
+export const SERVICE_PACKAGES = [
+  {
+    ...PACKAGE_CHR,
+    name: 'Full Service – Toyota C‑HR',
+    price: {
+      hatchback: 17500,
+      sedan: 19900,
+      suv: 22500,
+      truck: 25000
+    }
+  },
+  {
+    ...PACKAGE_AQUA,
+    name: 'Full Service – Toyota Aqua',
+    price: {
+      hatchback: 15000,
+      sedan: 17500,
+      suv: 20000,
+      truck: 22500
+    }
+  }
+];
