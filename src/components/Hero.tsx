@@ -159,7 +159,7 @@ const Hero = () => {
               >
                 <div className="eco-text-price text-eco-green">100%</div>
                 <p className="text-gray-400 text-sm">Eco-Friendly</p>
-              </div>
+              </motion.div>
             </Reveal>
           </div>
 
