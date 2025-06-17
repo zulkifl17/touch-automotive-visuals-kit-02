@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Phone, Mail } from 'lucide-react';
+import { X, Phone, Mail, CheckCircle2 } from 'lucide-react';
 
 const DevelopmentPopup = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -22,6 +22,10 @@ const DevelopmentPopup = () => {
     window.open('mailto:itmanager@daxiumtech.com', '_blank');
   };
 
+  const handleCallDaxium = () => {
+    window.open('tel:+94777260089', '_blank');
+  };
+
   return (
     <AnimatePresence>
       {showPopup && (
@@ -29,7 +33,7 @@ const DevelopmentPopup = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
           onClick={handleClose}
         >
           <motion.div
@@ -40,31 +44,52 @@ const DevelopmentPopup = () => {
             className="relative max-w-md w-full mx-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Futuristic Background with Gradient Border */}
-            <div className="relative bg-gradient-to-br from-blue-900 via-slate-900 to-blue-800 rounded-2xl overflow-hidden shadow-2xl">
-              {/* Animated Border Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 rounded-2xl opacity-75 animate-pulse"></div>
-              <div className="relative bg-slate-900 m-1 rounded-xl p-6">
-                
+            {/* Light themed popup with checkered background */}
+            <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-200">
+              {/* Checkered pattern background */}
+              <div className="absolute inset-0 opacity-5">
+                <div className="grid grid-cols-8 h-full">
+                  {[...Array(64)].map((_, i) => (
+                    <div
+                      key={i}
+                      className={`${(Math.floor(i / 8) + i) % 2 === 0 ? 'bg-blue-500' : 'bg-transparent'}`}
+                    />
+                  ))}
+                </div>
+              </div>
+              
+              <div className="relative p-6">
                 {/* Close Button */}
                 <button
                   onClick={handleClose}
-                  className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
+                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
                 >
                   <X size={24} />
                 </button>
+
+                {/* Status Icon */}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                  className="flex justify-center mb-4"
+                >
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-full p-3">
+                    <CheckCircle2 className="w-8 h-8 text-white" />
+                  </div>
+                </motion.div>
 
                 {/* Daxium Logo */}
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                  transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
                   className="flex justify-center mb-6"
                 >
                   <img 
                     src="/lovable-uploads/154277d9-047a-4677-8be8-0cf8e0cf3045.png" 
                     alt="Daxium Systems & Solutions"
-                    className="h-16 w-auto object-contain filter brightness-110"
+                    className="h-12 w-auto object-contain"
                   />
                 </motion.div>
 
@@ -75,30 +100,40 @@ const DevelopmentPopup = () => {
                   transition={{ delay: 0.4 }}
                   className="text-center space-y-4"
                 >
-                  <h3 className="text-xl font-bold text-white bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                  <h3 className="text-xl font-bold text-gray-800">
                     Website Under Development
                   </h3>
                   
-                  <p className="text-gray-300 text-sm leading-relaxed">
+                  <p className="text-gray-600 text-sm leading-relaxed">
                     This website is currently being developed by{' '}
-                    <span className="text-blue-400 font-semibold">Daxium Systems & Solutions</span>.
+                    <span className="text-blue-600 font-semibold">Daxium Systems & Solutions</span>.
                     The full version will be available in a few days.
                   </p>
                   
-                  <p className="text-gray-400 text-sm">
+                  <p className="text-gray-500 text-sm">
                     For any inquiries, feel free to contact us:
                   </p>
 
-                  {/* Contact Info */}
-                  <div className="space-y-2 text-xs text-gray-300">
-                    <div className="flex items-center justify-center space-x-2">
-                      <Mail size={14} className="text-blue-400" />
-                      <span>itmanager@daxiumtech.com</span>
-                    </div>
-                    <div className="flex items-center justify-center space-x-2">
-                      <Phone size={14} className="text-blue-400" />
-                      <span>+94 777 260 089</span>
-                    </div>
+                  {/* Contact Info - Clickable */}
+                  <div className="space-y-2 text-sm">
+                    <motion.button
+                      onClick={handleContactDaxium}
+                      className="flex items-center justify-center space-x-2 w-full p-2 rounded-lg hover:bg-gray-50 transition-colors"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Mail size={16} className="text-blue-500" />
+                      <span className="text-gray-700">itmanager@daxiumtech.com</span>
+                    </motion.button>
+                    <motion.button
+                      onClick={handleCallDaxium}
+                      className="flex items-center justify-center space-x-2 w-full p-2 rounded-lg hover:bg-gray-50 transition-colors"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Phone size={16} className="text-blue-500" />
+                      <span className="text-gray-700">+94 777 260 089</span>
+                    </motion.button>
                   </div>
                 </motion.div>
 
@@ -109,38 +144,41 @@ const DevelopmentPopup = () => {
                   transition={{ delay: 0.6 }}
                   className="flex flex-col sm:flex-row gap-3 mt-6"
                 >
-                  <button
+                  <motion.button
                     onClick={handleContactDaxium}
-                    className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                    className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-3 rounded-lg font-medium text-sm hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-md"
+                    whileHover={{ scale: 1.02, y: -1 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     Contact Daxium
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
                     onClick={handleClose}
-                    className="flex-1 border border-gray-600 text-gray-300 px-4 py-2 rounded-lg font-medium text-sm hover:bg-gray-800 hover:text-white transition-all duration-300 transform hover:scale-105 active:scale-95"
+                    className="flex-1 border border-gray-300 text-gray-700 px-4 py-3 rounded-lg font-medium text-sm hover:bg-gray-50 transition-all duration-300"
+                    whileHover={{ scale: 1.02, y: -1 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     Close
-                  </button>
+                  </motion.button>
                 </motion.div>
 
                 {/* Decorative Elements */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 animate-pulse"></div>
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-purple-500 to-blue-400 animate-pulse"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-600"></div>
               </div>
             </div>
 
-            {/* Floating Particles Effect */}
-            {[...Array(20)].map((_, i) => (
+            {/* Floating particles effect */}
+            {[...Array(15)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-60"
+                className="absolute w-1 h-1 bg-blue-500 rounded-full opacity-40"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                 }}
                 animate={{
                   y: [0, -10, 0],
-                  opacity: [0.6, 1, 0.6],
+                  opacity: [0.4, 0.8, 0.4],
                   scale: [1, 1.2, 1],
                 }}
                 transition={{

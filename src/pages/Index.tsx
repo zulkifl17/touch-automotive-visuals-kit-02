@@ -6,6 +6,7 @@ import ServicePackages from '../components/ServicePackages';
 import MultiStepBooking from '../components/MultiStepBooking';
 import WhyEcoTouch from '../components/WhyEcoTouch';
 import NewFooter from '../components/NewFooter';
+import DevelopmentPopup from '../components/DevelopmentPopup';
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
       <WhyEcoTouch />
       <MultiStepBooking />
       <NewFooter />
+      <DevelopmentPopup />
     </div>
   );
 };
