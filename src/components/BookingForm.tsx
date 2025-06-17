@@ -11,6 +11,9 @@ const BookingForm = () => {
     whatsapp: '',
     preferredDate: '',
     preferredTime: '',
+    package: '',
+    date: '',
+    time: ''
   });
 
   const handleSubmit = (e: React.FormEvent) => {
