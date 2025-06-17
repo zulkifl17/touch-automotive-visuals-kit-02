@@ -93,7 +93,7 @@ const ServicePackages = () => {
         </Reveal>
 
         {/* Package Detail Card */}
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedPackage.id}
@@ -101,18 +101,18 @@ const ServicePackages = () => {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="eco-card p-8 lg:p-12"
+              className="eco-card p-6 lg:p-8"
               whileHover={{ 
                 y: -8,
                 boxShadow: "0 0 8px var(--eco-leaf), 0 0 16px var(--eco-leaf)",
                 transition: { duration: 0.3 }
               }}
             >
-              <div className="grid lg:grid-cols-3 gap-8 items-start">
+              <div className="grid lg:grid-cols-2 gap-6 items-start">
                 {/* Left Side - Car Image */}
-                <div className="lg:col-span-1 flex flex-col items-center">
+                <div className="flex flex-col items-center justify-between h-full">
                   <motion.div 
-                    className="w-full max-w-sm mb-6"
+                    className="w-full max-w-xs mb-4"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2 }}
@@ -125,38 +125,40 @@ const ServicePackages = () => {
                   </motion.div>
                   
                   {/* Package Info */}
-                  <div className="text-center">
-                    <motion.h3 
-                      className="eco-text-h3 text-eco-white mb-4"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      {selectedPackage.title}
-                    </motion.h3>
-                    <motion.p 
-                      className="text-gray-300 mb-6"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 }}
-                    >
-                      {selectedPackage.description}
-                    </motion.p>
-                    
-                    {/* Price */}
-                    <motion.div 
-                      className="mb-8"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
-                    >
-                      <div className="flex flex-col items-center">
-                        <span className="eco-text-price text-eco-leaf">
-                          LKR {selectedPackage.priceLKR.toLocaleString()}
-                        </span>
-                        <span className="text-gray-400">per service</span>
-                      </div>
-                    </motion.div>
+                  <div className="text-center flex-1 flex flex-col justify-between">
+                    <div>
+                      <motion.h3 
+                        className="eco-text-h3 text-eco-white mb-3"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                      >
+                        {selectedPackage.title}
+                      </motion.h3>
+                      <motion.p 
+                        className="text-gray-300 mb-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                      >
+                        {selectedPackage.description}
+                      </motion.p>
+                      
+                      {/* Price */}
+                      <motion.div 
+                        className="mb-6"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+                      >
+                        <div className="flex flex-col items-center">
+                          <span className="eco-text-price text-eco-leaf">
+                            LKR {selectedPackage.priceLKR.toLocaleString()}
+                          </span>
+                          <span className="text-gray-400">per service</span>
+                        </div>
+                      </motion.div>
+                    </div>
 
                     {/* CTA Button */}
                     <motion.button 
@@ -173,16 +175,16 @@ const ServicePackages = () => {
                 </div>
 
                 {/* Right Side - Inclusions */}
-                <div className="lg:col-span-2">
+                <div className="flex flex-col justify-center">
                   <motion.h4 
-                    className="text-xl font-semibold text-eco-white mb-6"
+                    className="text-xl font-semibold text-eco-white mb-6 text-center lg:text-left"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                   >
                     What's Included:
                   </motion.h4>
-                  <div className="space-y-3 max-h-96 overflow-y-auto custom-scrollbar">
+                  <div className="space-y-3 max-h-80 overflow-y-auto custom-scrollbar">
                     {selectedPackage.inclusions.map((inclusion, index) => (
                       <motion.div
                         key={`${selectedPackage.id}-${index}`}
