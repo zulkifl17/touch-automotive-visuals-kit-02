@@ -49,7 +49,7 @@ const cardVariants = {
     scale: 1,
     transition: {
       duration: 0.6,
-      ease: "easeOut",
+      ease: [0.45, 0.05, 0.55, 0.95],
     },
   },
 };
