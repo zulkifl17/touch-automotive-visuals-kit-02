@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -52,7 +51,7 @@ WhatsApp: ${data.whatsapp}
 
 Please confirm this booking. Thank you!`;
 
-    const whatsappUrl = `https://wa.me/+94771234567?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/+94765353503?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 

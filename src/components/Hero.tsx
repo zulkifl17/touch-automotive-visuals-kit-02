@@ -33,7 +33,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32 md:pt-28 lg:pt-0">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-44 md:pt-40 lg:pt-0">
       {/* Background with enhanced animation */}
       <div className="absolute inset-0 hero-gradient"></div>
       
@@ -165,16 +165,16 @@ const Hero = () => {
 
           {/* Right Content - YouTube Video for Desktop */}
           <Reveal delay={900} className="hidden lg:block">
-            <div className="rounded-eco overflow-hidden w-full h-full">
+            <div className="relative rounded-eco overflow-hidden w-full aspect-video">
               <iframe
-                src="https://www.youtube.com/embed/hX2xVO4FE4s?autoplay=1&mute=1&loop=1&playlist=hX2xVO4FE4s&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1"
+                src="https://www.youtube.com/embed/hX2xVO4FE4s?autoplay=1&mute=1&loop=1&playlist=hX2xVO4FE4s&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&branding=0&cc_load_policy=0&fs=0"
                 width="100%"
-                height="400"
+                height="100%"
                 style={{ border: 'none', display: 'block' }}
                 frameBorder="0"
                 allow="autoplay; encrypted-media"
                 title="ECO TOUCH Premium Automotive Care Services"
-                className="pointer-events-none"
+                className="pointer-events-none absolute inset-0"
               ></iframe>
             </div>
           </Reveal>
@@ -189,16 +189,16 @@ const Hero = () => {
               animate={{ width: 96 }}
               transition={{ duration: 1, delay: 1.4 }}
             />
-            <div className="rounded-eco overflow-hidden">
+            <div className="relative rounded-eco overflow-hidden aspect-video">
               <iframe
-                src="https://www.youtube.com/embed/hX2xVO4FE4s?autoplay=1&mute=1&loop=1&playlist=hX2xVO4FE4s&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1"
+                src="https://www.youtube.com/embed/hX2xVO4FE4s?autoplay=1&mute=1&loop=1&playlist=hX2xVO4FE4s&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&branding=0&cc_load_policy=0&fs=0"
                 width="100%"
-                height="300"
+                height="100%"
                 style={{ border: 'none', display: 'block' }}
                 frameBorder="0"
                 allow="autoplay; encrypted-media"
                 title="ECO TOUCH Premium Automotive Care Services"
-                className="pointer-events-none"
+                className="pointer-events-none absolute inset-0"
               ></iframe>
             </div>
           </div>
