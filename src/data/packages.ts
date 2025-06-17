@@ -1,5 +1,5 @@
 
-import { ServicePackage } from '../types';
+import { ServicePackage } from '../types/service';
 
 export const PACKAGE_CHR: ServicePackage = {
   id: 'full-service-chr',
@@ -29,25 +29,25 @@ export const PACKAGE_CHR: ServicePackage = {
 export const PACKAGE_AQUA: ServicePackage = {
   id: 'full-service-aqua',
   title: 'Full Service – Toyota Aqua',
-  vehicleModels: ['Toyota Aqua', 'Toyota Prius'],
+  vehicleModels: ['Toyota Aqua'],
   priceLKR: 17500,
-  description: 'Eco-Hybrid Full Service with Premium Care',
+  description: 'Full Service with Oil & Oil Filter (OEM brands)',
   heroImage: '/img/packages/aqua.webp',
   inclusions: [
-    'Hybrid system inspection',
-    'Using original oil filter & Eco Oil',
+    'Using original oil filter & Can Oil',
     'Engine degreasing',
     'Tar removing',
     'Under wash',
     'Body wash',
     'Vacuum interior',
-    'Würth eco wax finish',
+    'Würth wax finish',
     'Brake fluid condition check',
     'Coolant condition check',
-    'Battery health check',
+    'General inspection report',
     'Mechanical inspection report',
     'Würth door hinges treatment',
-    'Full hybrid scanning report',
+    'Würth battery terminal protection',
+    'Hybrid system check',
   ],
 };
 

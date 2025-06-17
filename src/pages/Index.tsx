@@ -1,11 +1,9 @@
 
-import React from 'react';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import ServicePackages from '../components/ServicePackages';
-import MultiStepBooking from '../components/MultiStepBooking';
-import WhyEcoTouch from '../components/WhyEcoTouch';
-import NewFooter from '../components/NewFooter';
+import BookingForm from '../components/BookingForm';
+import Footer from '../components/Footer';
 
 const Index = () => {
   return (
@@ -13,9 +11,8 @@ const Index = () => {
       <Header />
       <Hero />
       <ServicePackages />
-      <WhyEcoTouch />
-      <MultiStepBooking />
-      <NewFooter />
+      <BookingForm />
+      <Footer />
     </div>
   );
 };

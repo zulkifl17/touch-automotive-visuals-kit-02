@@ -1,134 +1,76 @@
 
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Leaf, Phone } from 'lucide-react';
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 
-const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Services', href: '/packages' },
-  { name: 'Products', href: '/products' },
-  { name: 'Book Now', href: '/booking' },
-  { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
-];
-
-const Header: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location]);
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-eco-dark/90 backdrop-blur-lg shadow-lg' : 'bg-transparent'
-      }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: [0.45, 0.05, 0.55, 0.95] }}
-    >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-eco-dark/90 backdrop-blur-md border-b border-gray-800">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <motion.div
-              className="flex items-center"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Leaf className="h-8 w-8 text-eco-leaf" />
-              <span className="ml-2 text-xl font-bold font-montserrat tracking-widest text-eco-white">
-                ECO TOUCH
-              </span>
-            </motion.div>
-          </Link>
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-eco-green to-eco-leaf rounded-lg flex items-center justify-center">
+              <span className="text-eco-white font-bold text-lg">ET</span>
+            </div>
+            <span className="text-xl font-bold font-montserrat tracking-eco-wide eco-text-gradient">
+              ECO TOUCH
+            </span>
+          </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`text-sm font-medium tracking-wide transition-colors duration-200 hover:text-eco-leaf ${
-                  location.pathname === item.href
-                    ? 'text-eco-leaf'
-                    : 'text-eco-white'
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <a
-              href="tel:+94771234567"
-              className="flex items-center space-x-1 text-eco-green hover:text-eco-leaf transition-colors duration-200"
-            >
-              <Phone size={16} />
-              <span className="text-sm font-medium">Call Now</span>
+          <nav className="hidden md:flex items-center space-x-8">
+            <a href="#services" className="text-eco-white hover:text-eco-leaf transition-colors duration-300">
+              Services
             </a>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-eco-white hover:text-eco-leaf transition-colors duration-200"
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            <a href="#packages" className="text-eco-white hover:text-eco-leaf transition-colors duration-300">
+              Packages
+            </a>
+            <a href="#about" className="text-eco-white hover:text-eco-leaf transition-colors duration-300">
+              About
+            </a>
+            <a href="#contact" className="text-eco-white hover:text-eco-leaf transition-colors duration-300">
+              Contact
+            </a>
+            <button className="eco-button-primary">
+              Book Now
             </button>
-          </div>
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-eco-white"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
 
         {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              className="md:hidden"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: [0.45, 0.05, 0.55, 0.95] }}
-            >
-              <div className="px-2 pt-2 pb-3 space-y-1 bg-eco-dark/95 backdrop-blur-lg rounded-lg mt-2">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`block px-3 py-2 text-base font-medium tracking-wide transition-colors duration-200 hover:text-eco-leaf ${
-                      location.pathname === item.href
-                        ? 'text-eco-leaf'
-                        : 'text-eco-white'
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-                <a
-                  href="tel:+94771234567"
-                  className="flex items-center space-x-2 px-3 py-2 text-eco-green hover:text-eco-leaf transition-colors duration-200"
-                >
-                  <Phone size={16} />
-                  <span className="text-base font-medium">Call Now</span>
-                </a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-    </motion.header>
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t border-gray-800">
+            <div className="flex flex-col space-y-4">
+              <a href="#services" className="text-eco-white hover:text-eco-leaf transition-colors duration-300">
+                Services
+              </a>
+              <a href="#packages" className="text-eco-white hover:text-eco-leaf transition-colors duration-300">
+                Packages
+              </a>
+              <a href="#about" className="text-eco-white hover:text-eco-leaf transition-colors duration-300">
+                About
+              </a>
+              <a href="#contact" className="text-eco-white hover:text-eco-leaf transition-colors duration-300">
+                Contact
+              </a>
+              <button className="eco-button-primary w-full">
+                Book Now
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
   );
 };
 
