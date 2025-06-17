@@ -16,7 +16,8 @@ const MultiStepBooking: React.FC = () => {
   const selectedPackageId = location.state?.selectedPackage;
   const [step, setStep] = useState(1);
   
-  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<BookingForm>({
+  const { register, handleSubmit, formState: { errors, isValid }, watch, setValue, trigger } = useForm<BookingForm>({
+    mode: 'onChange',
     defaultValues: {
       package: selectedPackageId || '',
     }
@@ -55,8 +56,27 @@ Please confirm this booking. Thank you!`;
     window.open(whatsappUrl, '_blank');
   };
 
-  const nextStep = () => setStep(step + 1);
+  const nextStep = async () => {
+    let fieldsToValidate: (keyof BookingForm)[] = [];
+    
+    if (step === 1) {
+      fieldsToValidate = ['package', 'name', 'whatsapp', 'vehicle', 'branch'];
+    } else if (step === 2) {
+      fieldsToValidate = ['date', 'time'];
+    }
+    
+    const isStepValid = await trigger(fieldsToValidate);
+    
+    if (isStepValid) {
+      setStep(step + 1);
+    }
+  };
+  
   const prevStep = () => setStep(step - 1);
+
+  // Check if current step is valid
+  const isStep1Valid = watch('package') && watch('name') && watch('whatsapp') && watch('vehicle') && watch('branch');
+  const isStep2Valid = watch('date') && watch('time');
 
   return (
     <div className="py-20">
@@ -255,6 +275,7 @@ Please confirm this booking. Thank you!`;
                         type="button"
                         onClick={nextStep}
                         variant="primary"
+                        className={!isStep1Valid ? 'opacity-50 cursor-not-allowed' : ''}
                       >
                         Next Step
                       </IconArrowBtn>
@@ -335,6 +356,7 @@ Please confirm this booking. Thank you!`;
                         type="button"
                         onClick={prevStep}
                         variant="secondary"
+                        direction="left"
                       >
                         Previous
                       </IconArrowBtn>
@@ -342,6 +364,7 @@ Please confirm this booking. Thank you!`;
                         type="button"
                         onClick={nextStep}
                         variant="primary"
+                        className={!isStep2Valid ? 'opacity-50 cursor-not-allowed' : ''}
                       >
                         Review Booking
                       </IconArrowBtn>
@@ -411,13 +434,14 @@ Please confirm this booking. Thank you!`;
                         type="button"
                         onClick={prevStep}
                         variant="secondary"
+                        direction="left"
                       >
                         Previous
                       </IconArrowBtn>
                       <IconArrowBtn
                         type="submit"
                         variant="primary"
-                        className="animate-pulse"
+                        className="bg-eco-green hover:bg-eco-green/90 transition-colors"
                       >
                         Confirm on WhatsApp
                       </IconArrowBtn>

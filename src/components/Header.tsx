@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Leaf, Phone } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -49,10 +49,11 @@ const Header: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
             >
-              <Leaf className="h-8 w-8 text-eco-leaf" />
-              <span className="ml-2 text-xl font-bold font-montserrat tracking-widest text-eco-white">
-                ECO TOUCH
-              </span>
+              <img 
+                src="/lovable-uploads/6ded344e-365a-482a-b149-be54e9d3130f.png" 
+                alt="ECO TOUCH Logo"
+                className="h-8 w-auto object-contain"
+              />
             </motion.div>
           </Link>
 

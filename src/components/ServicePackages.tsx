@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Check, Car, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,6 +33,15 @@ const ServicePackages = () => {
         duration: 0.4
       }
     })
+  };
+
+  // Get car image based on package
+  const getCarImage = (packageId: string) => {
+    if (packageId === 'full-service-chr') {
+      return 'https://purepng.com/public/uploads/large/purepng.com-toyota-c-hr-grey-carcarvehicletransporttoyota-961524654571xtaeg.png';
+    } else {
+      return 'https://www.toyota-global.com/company/history_of_toyota/75years/vehicle_lineage/car/id60017505/images/m1.png';
+    }
   };
 
   return (
@@ -83,7 +93,7 @@ const ServicePackages = () => {
         </Reveal>
 
         {/* Package Detail Card */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedPackage.id}
@@ -98,56 +108,72 @@ const ServicePackages = () => {
                 transition: { duration: 0.3 }
               }}
             >
-              <div className="grid lg:grid-cols-2 gap-12 items-center">
-                {/* Package Info */}
-                <div>
-                  <motion.h3 
-                    className="eco-text-h3 text-eco-white mb-4"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    {selectedPackage.title}
-                  </motion.h3>
-                  <motion.p 
-                    className="text-gray-300 mb-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                  >
-                    {selectedPackage.description}
-                  </motion.p>
-                  
-                  {/* Price */}
+              <div className="grid lg:grid-cols-3 gap-8 items-start">
+                {/* Left Side - Car Image */}
+                <div className="lg:col-span-1 flex flex-col items-center">
                   <motion.div 
-                    className="mb-8"
+                    className="w-full max-w-sm mb-6"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
+                    transition={{ delay: 0.2 }}
                   >
-                    <div className="flex items-baseline">
-                      <span className="eco-text-price text-eco-leaf">
-                        LKR {selectedPackage.priceLKR.toLocaleString()}
-                      </span>
-                      <span className="text-gray-400 ml-2">per service</span>
-                    </div>
+                    <img 
+                      src={getCarImage(selectedPackage.id)} 
+                      alt={selectedPackage.title}
+                      className="w-full h-auto object-contain filter drop-shadow-lg"
+                    />
                   </motion.div>
+                  
+                  {/* Package Info */}
+                  <div className="text-center">
+                    <motion.h3 
+                      className="eco-text-h3 text-eco-white mb-4"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      {selectedPackage.title}
+                    </motion.h3>
+                    <motion.p 
+                      className="text-gray-300 mb-6"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                    >
+                      {selectedPackage.description}
+                    </motion.p>
+                    
+                    {/* Price */}
+                    <motion.div 
+                      className="mb-8"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+                    >
+                      <div className="flex flex-col items-center">
+                        <span className="eco-text-price text-eco-leaf">
+                          LKR {selectedPackage.priceLKR.toLocaleString()}
+                        </span>
+                        <span className="text-gray-400">per service</span>
+                      </div>
+                    </motion.div>
 
-                  {/* CTA Button */}
-                  <motion.button 
-                    className="eco-btn-primary w-full lg:w-auto"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    whileHover={{ scale: 1.05, rotate: 2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Book This Package
-                  </motion.button>
+                    {/* CTA Button */}
+                    <motion.button 
+                      className="eco-btn-primary w-full"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      whileHover={{ scale: 1.05, rotate: 2 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Book This Package
+                    </motion.button>
+                  </div>
                 </div>
 
-                {/* Inclusions */}
-                <div>
+                {/* Right Side - Inclusions */}
+                <div className="lg:col-span-2">
                   <motion.h4 
                     className="text-xl font-semibold text-eco-white mb-6"
                     initial={{ opacity: 0, y: 20 }}

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface IconArrowBtnProps {
   children: React.ReactNode;
@@ -9,6 +9,7 @@ interface IconArrowBtnProps {
   onClick?: () => void;
   variant?: 'primary' | 'secondary';
   className?: string;
+  direction?: 'left' | 'right';
 }
 
 export const IconArrowBtn: React.FC<IconArrowBtnProps> = ({ 
@@ -16,8 +17,11 @@ export const IconArrowBtn: React.FC<IconArrowBtnProps> = ({
   type = 'button', 
   onClick, 
   variant = 'primary',
-  className = ''
+  className = '',
+  direction = 'right'
 }) => {
+  const ArrowIcon = direction === 'left' ? ArrowLeft : ArrowRight;
+  
   return (
     <motion.button
       type={type}
@@ -30,8 +34,9 @@ export const IconArrowBtn: React.FC<IconArrowBtnProps> = ({
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
+      {direction === 'left' && <ArrowIcon size={18} />}
       <span>{children}</span>
-      <ArrowRight size={18} />
+      {direction === 'right' && <ArrowIcon size={18} />}
     </motion.button>
   );
 };

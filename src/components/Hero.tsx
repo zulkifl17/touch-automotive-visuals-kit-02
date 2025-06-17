@@ -163,18 +163,18 @@ const Hero = () => {
             </Reveal>
           </div>
 
-          {/* Right Content - Video for Desktop */}
+          {/* Right Content - New YouTube Video for Desktop */}
           <Reveal delay={900} className="hidden lg:block">
             <div className="rounded-eco overflow-hidden">
               <iframe
-                src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Fecotouch.lk%2Fvideos%2F1060952871627229%2F&show_text=false&width=267&t=0"
+                src="https://www.youtube.com/embed/hX2xVO4FE4s?autoplay=1&mute=1&loop=1&playlist=hX2xVO4FE4s&controls=0&modestbranding=1&rel=0"
                 width="100%"
                 height="400"
                 style={{ border: 'none', overflow: 'hidden' }}
                 scrolling="no"
                 frameBorder="0"
                 allowFullScreen={true}
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                allow="autoplay; encrypted-media"
                 title="ECO TOUCH Premium Automotive Care Services"
               ></iframe>
             </div>
@@ -192,14 +192,14 @@ const Hero = () => {
             />
             <div className="rounded-eco overflow-hidden">
               <iframe
-                src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Fecotouch.lk%2Fvideos%2F1060952871627229%2F&show_text=false&width=267&t=0"
+                src="https://www.youtube.com/embed/hX2xVO4FE4s?autoplay=1&mute=1&loop=1&playlist=hX2xVO4FE4s&controls=0&modestbranding=1&rel=0"
                 width="100%"
                 height="300"
                 style={{ border: 'none', overflow: 'hidden' }}
                 scrolling="no"
                 frameBorder="0"
                 allowFullScreen={true}
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                allow="autoplay; encrypted-media"
                 title="ECO TOUCH Premium Automotive Care Services"
               ></iframe>
             </div>
