@@ -14,7 +14,7 @@ const ServicePackages = () => {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.5, ease: [0.45, 0.05, 0.55, 0.95] }
+      transition: { duration: 0.5, ease: "easeOut" }
     },
     exit: { 
       opacity: 0, 
@@ -31,7 +31,7 @@ const ServicePackages = () => {
       transition: {
         delay: i * 0.1,
         duration: 0.4,
-        ease: [0.45, 0.05, 0.55, 0.95]
+        ease: "easeOut"
       }
     })
   };
