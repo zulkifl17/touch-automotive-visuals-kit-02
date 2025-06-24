@@ -11,7 +11,6 @@ export interface ServicePackage {
 
 export interface BookingForm {
   name: string;
-  vehicle: string;
   branch: 'Pitakotte' | 'Battaramulla' | 'Boralesgamuwa';
   whatsapp: string;
   preferredDate: string;

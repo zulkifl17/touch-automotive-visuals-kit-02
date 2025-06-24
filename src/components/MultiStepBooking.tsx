@@ -3,17 +3,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 import { BookingForm } from '../types';
-import { SERVICE_PACKAGES } from '../data/packages';
+import { PREMIUM_PACKAGES } from '../data/packages';
+import { OTHER_PACKAGES } from '../data/otherPackages';
 import { BRANCHES } from '../data/branches';
 import Reveal from './ui/Reveal';
 import { CardGlow } from './shared/CardGlow';
 import { IconArrowBtn } from './shared/IconArrowBtn';
-import { Calendar, Clock, MapPin, Phone, User, Car, Package } from 'lucide-react';
+import { Calendar, Clock, MapPin, Phone, User, Package } from 'lucide-react';
 
 const MultiStepBooking: React.FC = () => {
   const location = useLocation();
   const selectedPackageId = location.state?.selectedPackage;
   const [step, setStep] = useState(1);
+  
+  const allPackages = [...PREMIUM_PACKAGES, ...OTHER_PACKAGES];
   
   const { register, handleSubmit, formState: { errors, isValid }, watch, setValue, trigger } = useForm<BookingForm>({
     mode: 'onChange',
@@ -29,7 +32,7 @@ const MultiStepBooking: React.FC = () => {
   }, [selectedPackageId, setValue]);
 
   const watchedPackage = watch('package');
-  const selectedPackage = SERVICE_PACKAGES.find(pkg => pkg.id === watchedPackage);
+  const selectedPackage = allPackages.find(pkg => pkg.id === watchedPackage);
 
   const timeSlots = [
     '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'
@@ -37,13 +40,13 @@ const MultiStepBooking: React.FC = () => {
 
   const onSubmit = (data: BookingForm) => {
     const selectedBranch = BRANCHES.find(b => b.id === data.branch);
-    const selectedPackageData = SERVICE_PACKAGES.find(p => p.id === data.package);
+    const selectedPackageData = allPackages.find(p => p.id === data.package);
     
     const message = `Eco Touch Booking:
     
 Name: ${data.name}
-Vehicle: ${data.vehicle}
-Package: ${selectedPackageData?.name || 'Not selected'}
+Package: ${selectedPackageData?.title || 'Not selected'}
+Vehicle: ${selectedPackageData?.vehicleModels[0] || 'Not specified'}
 Branch: ${selectedBranch?.name || 'Not selected'}
 Date: ${data.date}
 Time: ${data.time}
@@ -59,7 +62,7 @@ Please confirm this booking. Thank you!`;
     let fieldsToValidate: (keyof BookingForm)[] = [];
     
     if (step === 1) {
-      fieldsToValidate = ['package', 'name', 'whatsapp', 'vehicle', 'branch'];
+      fieldsToValidate = ['package', 'name', 'whatsapp', 'branch'];
     } else if (step === 2) {
       fieldsToValidate = ['date', 'time'];
     }
@@ -74,7 +77,7 @@ Please confirm this booking. Thank you!`;
   const prevStep = () => setStep(step - 1);
 
   // Check if current step is valid
-  const isStep1Valid = watch('package') && watch('name') && watch('whatsapp') && watch('vehicle') && watch('branch');
+  const isStep1Valid = watch('package') && watch('name') && watch('whatsapp') && watch('branch');
   const isStep2Valid = watch('date') && watch('time');
 
   return (
@@ -150,34 +153,87 @@ Please confirm this booking. Thank you!`;
                         <Package size={18} className="text-eco-leaf" />
                         <span>Select Package</span>
                       </label>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {SERVICE_PACKAGES.map((pkg) => (
-                          <motion.label
-                            key={pkg.id}
-                            className={`cursor-pointer rounded-eco p-4 border-2 transition-all duration-300 ${
-                              watchedPackage === pkg.id
-                                ? 'border-eco-green bg-eco-green/10'
-                                : 'border-gray-600 hover:border-eco-leaf/50'
-                            }`}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                          >
-                            <input
-                              type="radio"
-                              value={pkg.id}
-                              {...register('package', { required: 'Please select a package' })}
-                              className="sr-only"
-                            />
-                            <div className="space-y-2">
-                              <h3 className="font-semibold text-eco-white">{pkg.name}</h3>
-                              <p className="text-sm text-eco-white/70">{pkg.description}</p>
-                              <p className="text-eco-green font-bold">
-                                From LKR {pkg.price.hatchback.toLocaleString()}
-                              </p>
-                            </div>
-                          </motion.label>
-                        ))}
+                      
+                      {/* Premium Packages */}
+                      <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-eco-leaf mb-3">Premium Packages</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {PREMIUM_PACKAGES.map((pkg) => (
+                            <motion.label
+                              key={pkg.id}
+                              className={`cursor-pointer rounded-eco p-4 border-2 transition-all duration-300 ${
+                                watchedPackage === pkg.id
+                                  ? 'border-eco-green bg-eco-green/10'
+                                  : 'border-gray-600 hover:border-eco-leaf/50'
+                              }`}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <input
+                                type="radio"
+                                value={pkg.id}
+                                {...register('package', { required: 'Please select a package' })}
+                                className="sr-only"
+                              />
+                              <div className="flex items-center space-x-3">
+                                <img 
+                                  src={pkg.heroImage} 
+                                  alt={pkg.title}
+                                  className="w-16 h-12 object-contain"
+                                />
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-eco-white">{pkg.title}</h4>
+                                  <p className="text-sm text-eco-white/70">{pkg.description}</p>
+                                  <p className="text-eco-green font-bold">
+                                    LKR {pkg.priceLKR.toLocaleString()}
+                                  </p>
+                                </div>
+                              </div>
+                            </motion.label>
+                          ))}
+                        </div>
                       </div>
+
+                      {/* Other Packages */}
+                      <div>
+                        <h3 className="text-lg font-semibold text-eco-leaf mb-3">Other Vehicle Packages</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-80 overflow-y-auto custom-scrollbar">
+                          {OTHER_PACKAGES.map((pkg) => (
+                            <motion.label
+                              key={pkg.id}
+                              className={`cursor-pointer rounded-eco p-4 border-2 transition-all duration-300 ${
+                                watchedPackage === pkg.id
+                                  ? 'border-eco-green bg-eco-green/10'
+                                  : 'border-gray-600 hover:border-eco-leaf/50'
+                              }`}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <input
+                                type="radio"
+                                value={pkg.id}
+                                {...register('package', { required: 'Please select a package' })}
+                                className="sr-only"
+                              />
+                              <div className="flex items-center space-x-3">
+                                <img 
+                                  src={pkg.heroImage} 
+                                  alt={pkg.title}
+                                  className="w-16 h-12 object-contain"
+                                />
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-eco-white">{pkg.title}</h4>
+                                  <p className="text-sm text-eco-white/70">{pkg.description}</p>
+                                  <p className="text-eco-green font-bold">
+                                    LKR {pkg.priceLKR.toLocaleString()}
+                                  </p>
+                                </div>
+                              </div>
+                            </motion.label>
+                          ))}
+                        </div>
+                      </div>
+                      
                       {errors.package && (
                         <p className="text-red-400 text-sm">{errors.package.message}</p>
                       )}
@@ -225,28 +281,7 @@ Please confirm this booking. Thank you!`;
                         )}
                       </div>
 
-                      <div className="space-y-2">
-                        <label className="flex items-center space-x-2 text-eco-white font-medium">
-                          <Car size={18} className="text-eco-leaf" />
-                          <span>Vehicle Type</span>
-                        </label>
-                        <motion.select
-                          {...register('vehicle', { required: 'Please select your vehicle type' })}
-                          className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-eco text-eco-white focus:outline-none focus:border-eco-green focus:ring-2 focus:ring-eco-green/20"
-                          whileFocus={{ scale: 1.02 }}
-                        >
-                          <option value="">Select Vehicle Type</option>
-                          <option value="hatchback">Hatchback</option>
-                          <option value="sedan">Sedan</option>
-                          <option value="suv">SUV</option>
-                          <option value="truck">Truck</option>
-                        </motion.select>
-                        {errors.vehicle && (
-                          <p className="text-red-400 text-sm">{errors.vehicle.message}</p>
-                        )}
-                      </div>
-
-                      <div className="space-y-2">
+                      <div className="space-y-2 md:col-span-2">
                         <label className="flex items-center space-x-2 text-eco-white font-medium">
                           <MapPin size={18} className="text-eco-leaf" />
                           <span>Branch</span>
@@ -395,7 +430,7 @@ Please confirm this booking. Thank you!`;
                           <strong className="text-eco-leaf">Phone:</strong> {watch('whatsapp')}
                         </div>
                         <div>
-                          <strong className="text-eco-leaf">Vehicle:</strong> {watch('vehicle')}
+                          <strong className="text-eco-leaf">Vehicle:</strong> {selectedPackage?.vehicleModels[0]}
                         </div>
                         <div>
                           <strong className="text-eco-leaf">Branch:</strong>{' '}
@@ -412,11 +447,11 @@ Please confirm this booking. Thank you!`;
                       {selectedPackage && (
                         <div className="border-t border-gray-600 pt-4">
                           <h3 className="text-lg font-semibold text-eco-white mb-2">
-                            Selected Package: {selectedPackage.name}
+                            Selected Package: {selectedPackage.title}
                           </h3>
                           <p className="text-eco-white/70 mb-2">{selectedPackage.description}</p>
                           <p className="text-eco-green font-bold text-xl">
-                            Price: LKR {selectedPackage.price[watch('vehicle') as keyof typeof selectedPackage.price]?.toLocaleString() || 'N/A'}
+                            Price: LKR {selectedPackage.priceLKR.toLocaleString()}
                           </p>
                         </div>
                       )}

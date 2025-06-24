@@ -1,13 +1,15 @@
 
 import React, { useState } from 'react';
-import { Check, Car, Zap } from 'lucide-react';
+import { Check, Car, Zap, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SERVICE_PACKAGES } from '../data/packages';
+import { PREMIUM_PACKAGES } from '../data/packages';
+import { OTHER_PACKAGES } from '../data/otherPackages';
 import { ServicePackage } from '../types';
 import Reveal from './ui/Reveal';
 
 const ServicePackages = () => {
-  const [selectedPackage, setSelectedPackage] = useState<ServicePackage>(SERVICE_PACKAGES[0]);
+  const [selectedPackage, setSelectedPackage] = useState<ServicePackage>(PREMIUM_PACKAGES[0]);
+  const [activeTab, setActiveTab] = useState<'premium' | 'other'>('premium');
 
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -37,12 +39,11 @@ const ServicePackages = () => {
 
   // Get car image based on package
   const getCarImage = (packageId: string) => {
-    if (packageId === 'full-service-chr') {
-      return 'https://purepng.com/public/uploads/large/purepng.com-toyota-c-hr-grey-carcarvehicletransporttoyota-961524654571xtaeg.png';
-    } else {
-      return 'https://www.toyota-global.com/company/history_of_toyota/75years/vehicle_lineage/car/id60017505/images/m1.png';
-    }
+    const pkg = [...PREMIUM_PACKAGES, ...OTHER_PACKAGES].find(p => p.id === packageId);
+    return pkg?.heroImage || 'https://purepng.com/public/uploads/large/purepng.com-toyota-c-hr-grey-carcarvehicletransporttoyota-961524654571xtaeg.png';
   };
+
+  const currentPackages = activeTab === 'premium' ? PREMIUM_PACKAGES : OTHER_PACKAGES;
 
   return (
     <section className="py-20 px-6 service-pattern">
@@ -50,47 +51,141 @@ const ServicePackages = () => {
         {/* Section Header */}
         <Reveal className="text-center mb-16">
           <h2 className="eco-text-h2 text-eco-white mb-4">
-            Premium Service Packages
+            Service Packages
           </h2>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             Choose from our carefully crafted service packages designed for your vehicle
           </p>
         </Reveal>
 
-        {/* Package Selector */}
-        <Reveal delay={200} className="flex justify-center mb-12">
+        {/* Package Category Tabs */}
+        <Reveal delay={200} className="flex justify-center mb-8">
           <div className="flex bg-gray-900 rounded-eco p-2">
-            {SERVICE_PACKAGES.map((pkg) => (
-              <motion.button
-                key={pkg.id}
-                onClick={() => setSelectedPackage(pkg)}
-                className={`flex items-center px-6 py-3 rounded-eco transition-all duration-300 relative ${
-                  selectedPackage.id === pkg.id
-                    ? 'text-eco-white shadow-lg'
-                    : 'text-gray-400 hover:text-eco-white'
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {selectedPackage.id === pkg.id && (
-                  <motion.div
-                    className="absolute inset-0 bg-eco-green rounded-eco"
-                    layoutId="activeTab"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-                <span className="relative z-10 flex items-center">
-                  {pkg.id === 'full-service-chr' ? (
-                    <Car className="w-5 h-5 mr-2" />
-                  ) : (
-                    <Zap className="w-5 h-5 mr-2" />
-                  )}
-                  {pkg.title.split('–')[1]?.trim() || pkg.title}
-                </span>
-              </motion.button>
-            ))}
+            <motion.button
+              onClick={() => {
+                setActiveTab('premium');
+                setSelectedPackage(PREMIUM_PACKAGES[0]);
+              }}
+              className={`flex items-center px-6 py-3 rounded-eco transition-all duration-300 relative ${
+                activeTab === 'premium'
+                  ? 'text-eco-white shadow-lg'
+                  : 'text-gray-400 hover:text-eco-white'
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {activeTab === 'premium' && (
+                <motion.div
+                  className="absolute inset-0 bg-eco-green rounded-eco"
+                  layoutId="activeTab"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10 flex items-center">
+                <Star className="w-5 h-5 mr-2" />
+                Premium Packages
+              </span>
+            </motion.button>
+            
+            <motion.button
+              onClick={() => {
+                setActiveTab('other');
+                setSelectedPackage(OTHER_PACKAGES[0]);
+              }}
+              className={`flex items-center px-6 py-3 rounded-eco transition-all duration-300 relative ${
+                activeTab === 'other'
+                  ? 'text-eco-white shadow-lg'
+                  : 'text-gray-400 hover:text-eco-white'
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {activeTab === 'other' && (
+                <motion.div
+                  className="absolute inset-0 bg-eco-green rounded-eco"
+                  layoutId="activeTab"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10 flex items-center">
+                <Car className="w-5 h-5 mr-2" />
+                Other Vehicles
+              </span>
+            </motion.button>
           </div>
         </Reveal>
+
+        {/* Package Grid for Other Vehicles */}
+        {activeTab === 'other' && (
+          <Reveal delay={300} className="mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {OTHER_PACKAGES.map((pkg) => (
+                <motion.div
+                  key={pkg.id}
+                  className={`eco-card p-6 cursor-pointer transition-all duration-300 ${
+                    selectedPackage.id === pkg.id
+                      ? 'ring-2 ring-eco-green'
+                      : 'hover:ring-1 hover:ring-eco-leaf'
+                  }`}
+                  onClick={() => setSelectedPackage(pkg)}
+                  whileHover={{ y: -4 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="text-center">
+                    <img 
+                      src={pkg.heroImage} 
+                      alt={pkg.title}
+                      className="w-32 h-24 object-contain mx-auto mb-4"
+                    />
+                    <h3 className="text-lg font-semibold text-eco-white mb-2">
+                      {pkg.title.split('–')[1]?.trim() || pkg.title}
+                    </h3>
+                    <p className="text-eco-green font-bold text-xl">
+                      LKR {pkg.priceLKR.toLocaleString()}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </Reveal>
+        )}
+
+        {/* Package Selector for Premium */}
+        {activeTab === 'premium' && (
+          <Reveal delay={300} className="flex justify-center mb-12">
+            <div className="flex bg-gray-900 rounded-eco p-2">
+              {PREMIUM_PACKAGES.map((pkg) => (
+                <motion.button
+                  key={pkg.id}
+                  onClick={() => setSelectedPackage(pkg)}
+                  className={`flex items-center px-6 py-3 rounded-eco transition-all duration-300 relative ${
+                    selectedPackage.id === pkg.id
+                      ? 'text-eco-white shadow-lg'
+                      : 'text-gray-400 hover:text-eco-white'
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {selectedPackage.id === pkg.id && (
+                    <motion.div
+                      className="absolute inset-0 bg-eco-green rounded-eco"
+                      layoutId="premiumActiveTab"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10 flex items-center">
+                    {pkg.id === 'full-service-chr' ? (
+                      <Car className="w-5 h-5 mr-2" />
+                    ) : (
+                      <Zap className="w-5 h-5 mr-2" />
+                    )}
+                    {pkg.title.split('–')[1]?.trim() || pkg.title}
+                  </span>
+                </motion.button>
+              ))}
+            </div>
+          </Reveal>
+        )}
 
         {/* Package Detail Card */}
         <div className="max-w-5xl mx-auto">
@@ -168,6 +263,7 @@ const ServicePackages = () => {
                       transition={{ delay: 0.6 }}
                       whileHover={{ scale: 1.05, rotate: 2 }}
                       whileTap={{ scale: 0.95 }}
+                      onClick={() => window.location.href = '/booking'}
                     >
                       Book This Package
                     </motion.button>

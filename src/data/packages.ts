@@ -1,4 +1,3 @@
-
 import { ServicePackage } from '../types';
 
 export const PACKAGE_CHR: ServicePackage = {
@@ -51,7 +50,10 @@ export const PACKAGE_AQUA: ServicePackage = {
   ],
 };
 
-// Extended structure for the booking form
+// Premium packages for the packages selector
+export const PREMIUM_PACKAGES = [PACKAGE_CHR, PACKAGE_AQUA];
+
+// Extended structure for the booking form - keeping for backward compatibility
 export const SERVICE_PACKAGES = [
   {
     ...PACKAGE_CHR,
