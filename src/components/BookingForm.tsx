@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
-import { Calendar, Clock, MapPin, User, Car, Phone } from 'lucide-react';
+import { Calendar, Clock, MapPin, User, Package, Phone } from 'lucide-react';
 import { BookingForm as BookingFormType } from '../types';
+import { PREMIUM_PACKAGES } from '../data/packages';
+import { OTHER_PACKAGES } from '../data/otherPackages';
 
 const BookingForm = () => {
   const [formData, setFormData] = useState<BookingFormType>({
     name: '',
-    vehicle: '',
     branch: 'Pitakotte',
     whatsapp: '',
     preferredDate: '',
@@ -16,12 +17,17 @@ const BookingForm = () => {
     time: ''
   });
 
+  const allPackages = [...PREMIUM_PACKAGES, ...OTHER_PACKAGES];
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    const selectedPackage = allPackages.find(pkg => pkg.id === formData.package);
+    
     const message = `Eco Touch booking:
 Name: ${formData.name}
-Vehicle: ${formData.vehicle}
+Package: ${selectedPackage?.title || 'Not selected'}
+Vehicle: ${selectedPackage?.vehicleModels[0] || 'Not specified'}
 Branch: ${formData.branch}
 Date/Time: ${formData.preferredDate} ${formData.preferredTime}
 WhatsApp: ${formData.whatsapp}`;
@@ -61,23 +67,33 @@ WhatsApp: ${formData.whatsapp}`;
                 />
               </div>
 
-              {/* Vehicle */}
+              {/* Package Selection */}
               <div className="relative">
                 <label className="block text-eco-leaf font-medium mb-2">
-                  <Car className="inline w-4 h-4 mr-2" />
-                  Vehicle Model
+                  <Package className="inline w-4 h-4 mr-2" />
+                  Service Package
                 </label>
                 <select
                   required
-                  value={formData.vehicle}
-                  onChange={(e) => setFormData({ ...formData, vehicle: e.target.value })}
+                  value={formData.package}
+                  onChange={(e) => setFormData({ ...formData, package: e.target.value })}
                   className="w-full bg-gray-800 border border-gray-600 rounded-eco px-4 py-3 text-eco-white focus:border-eco-blue focus:ring-2 focus:ring-eco-blue/20 transition-all duration-200"
                 >
-                  <option value="">Select your vehicle</option>
-                  <option value="Toyota C-HR">Toyota C-HR</option>
-                  <option value="Toyota Aqua">Toyota Aqua</option>
-                  <option value="Toyota Prius">Toyota Prius</option>
-                  <option value="Other">Other</option>
+                  <option value="">Select your service package</option>
+                  <optgroup label="Premium Packages">
+                    {PREMIUM_PACKAGES.map((pkg) => (
+                      <option key={pkg.id} value={pkg.id}>
+                        {pkg.title} - LKR {pkg.priceLKR.toLocaleString()}
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Other Vehicles">
+                    {OTHER_PACKAGES.map((pkg) => (
+                      <option key={pkg.id} value={pkg.id}>
+                        {pkg.title} - LKR {pkg.priceLKR.toLocaleString()}
+                      </option>
+                    ))}
+                  </optgroup>
                 </select>
               </div>
 
