@@ -1,8 +1,16 @@
+
 import React, { useState } from 'react';
 import { Calendar, Clock, MapPin, User, Package, Phone } from 'lucide-react';
 import { BookingForm as BookingFormType } from '../types';
 import { PREMIUM_PACKAGES } from '../data/packages';
 import { OTHER_PACKAGES } from '../data/otherPackages';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
 
 const BookingForm = () => {
   const [formData, setFormData] = useState<BookingFormType>({
@@ -95,18 +103,25 @@ WhatsApp: ${formData.whatsapp}`;
                 <Package className="inline w-4 h-4 mr-2" />
                 Other Vehicle Packages
               </label>
-              <select
+              <Select
                 value={formData.package}
-                onChange={(e) => setFormData({ ...formData, package: e.target.value })}
-                className="w-full bg-gray-800 border border-gray-600 rounded-eco px-4 py-3 text-eco-white focus:border-eco-blue focus:ring-2 focus:ring-eco-blue/20 transition-all duration-200"
+                onValueChange={(value) => setFormData({ ...formData, package: value })}
               >
-                <option value="">Select a vehicle package</option>
-                {OTHER_PACKAGES.map((pkg) => (
-                  <option key={pkg.id} value={pkg.id}>
-                    {pkg.title} - LKR {pkg.priceLKR.toLocaleString()}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="w-full bg-gray-800 border border-gray-600 rounded-eco px-4 py-3 text-eco-white focus:border-eco-blue focus:ring-2 focus:ring-eco-blue/20 transition-all duration-200">
+                  <SelectValue placeholder="Select a vehicle package" />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-800 border border-gray-600 rounded-eco">
+                  {OTHER_PACKAGES.map((pkg) => (
+                    <SelectItem 
+                      key={pkg.id} 
+                      value={pkg.id}
+                      className="text-eco-white hover:bg-gray-700 focus:bg-gray-700"
+                    >
+                      {pkg.title} - LKR {pkg.priceLKR.toLocaleString()}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="grid lg:grid-cols-2 gap-6">
