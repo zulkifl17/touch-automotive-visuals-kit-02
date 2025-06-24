@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Calendar, Clock, MapPin, User, Package, Phone } from 'lucide-react';
 import { BookingForm as BookingFormType } from '../types';
@@ -50,6 +49,66 @@ WhatsApp: ${formData.whatsapp}`;
 
         <div className="eco-card p-8 lg:p-12">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Premium Packages Section */}
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-eco-leaf mb-4">Premium Packages</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {PREMIUM_PACKAGES.map((pkg) => (
+                  <label
+                    key={pkg.id}
+                    className={`cursor-pointer rounded-eco p-4 border-2 transition-all duration-300 ${
+                      formData.package === pkg.id
+                        ? 'border-eco-green bg-eco-green/10'
+                        : 'border-gray-600 hover:border-eco-leaf/50'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="package"
+                      value={pkg.id}
+                      checked={formData.package === pkg.id}
+                      onChange={(e) => setFormData({ ...formData, package: e.target.value })}
+                      className="sr-only"
+                    />
+                    <div className="flex items-center space-x-3">
+                      <img 
+                        src={pkg.heroImage} 
+                        alt={pkg.title}
+                        className="w-16 h-12 object-contain"
+                      />
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-eco-white">{pkg.title}</h4>
+                        <p className="text-sm text-eco-white/70">{pkg.description}</p>
+                        <p className="text-eco-green font-bold">
+                          LKR {pkg.priceLKR.toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Other Vehicles Dropdown */}
+            <div className="mb-6">
+              <label className="block text-eco-leaf font-medium mb-2">
+                <Package className="inline w-4 h-4 mr-2" />
+                Other Vehicle Packages
+              </label>
+              <select
+                value={formData.package}
+                onChange={(e) => setFormData({ ...formData, package: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-eco px-4 py-3 text-eco-white focus:border-eco-blue focus:ring-2 focus:ring-eco-blue/20 transition-all duration-200"
+              >
+                <option value="">Select a vehicle package</option>
+                {OTHER_PACKAGES.map((pkg) => (
+                  <option key={pkg.id} value={pkg.id}>
+                    {pkg.title} - LKR {pkg.priceLKR.toLocaleString()}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <div className="grid lg:grid-cols-2 gap-6">
               {/* Name */}
               <div className="relative">
@@ -65,36 +124,6 @@ WhatsApp: ${formData.whatsapp}`;
                   className="w-full bg-gray-800 border border-gray-600 rounded-eco px-4 py-3 text-eco-white focus:border-eco-blue focus:ring-2 focus:ring-eco-blue/20 transition-all duration-200"
                   placeholder="Enter your full name"
                 />
-              </div>
-
-              {/* Package Selection */}
-              <div className="relative">
-                <label className="block text-eco-leaf font-medium mb-2">
-                  <Package className="inline w-4 h-4 mr-2" />
-                  Service Package
-                </label>
-                <select
-                  required
-                  value={formData.package}
-                  onChange={(e) => setFormData({ ...formData, package: e.target.value })}
-                  className="w-full bg-gray-800 border border-gray-600 rounded-eco px-4 py-3 text-eco-white focus:border-eco-blue focus:ring-2 focus:ring-eco-blue/20 transition-all duration-200"
-                >
-                  <option value="">Select your service package</option>
-                  <optgroup label="Premium Packages">
-                    {PREMIUM_PACKAGES.map((pkg) => (
-                      <option key={pkg.id} value={pkg.id}>
-                        {pkg.title} - LKR {pkg.priceLKR.toLocaleString()}
-                      </option>
-                    ))}
-                  </optgroup>
-                  <optgroup label="Other Vehicles">
-                    {OTHER_PACKAGES.map((pkg) => (
-                      <option key={pkg.id} value={pkg.id}>
-                        {pkg.title} - LKR {pkg.priceLKR.toLocaleString()}
-                      </option>
-                    ))}
-                  </optgroup>
-                </select>
               </div>
 
               {/* Branch */}
@@ -146,7 +175,7 @@ WhatsApp: ${formData.whatsapp}`;
               </div>
 
               {/* Preferred Time */}
-              <div className="relative">
+              <div className="relative lg:col-span-2">
                 <label className="block text-eco-leaf font-medium mb-2">
                   <Clock className="inline w-4 h-4 mr-2" />
                   Preferred Time
