@@ -18,4 +18,6 @@ export interface BookingForm {
   package: string;
   date: string;
   time: string;
+  customVehicleName?: string;
+  customServiceType?: string;
 }

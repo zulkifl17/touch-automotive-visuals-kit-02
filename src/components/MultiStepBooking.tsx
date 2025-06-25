@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -10,7 +9,7 @@ import { BRANCHES } from '../data/branches';
 import Reveal from './ui/Reveal';
 import { CardGlow } from './shared/CardGlow';
 import { IconArrowBtn } from './shared/IconArrowBtn';
-import { Calendar, Clock, MapPin, Phone, User, Package, ChevronDown } from 'lucide-react';
+import { Calendar, Clock, MapPin, Phone, User, Package, ChevronDown, Settings } from 'lucide-react';
 
 const MultiStepBooking: React.FC = () => {
   const location = useLocation();
@@ -35,6 +34,8 @@ const MultiStepBooking: React.FC = () => {
   }, [selectedPackageId, setValue, trigger]);
 
   const watchedPackage = watch('package');
+  const watchedCustomVehicle = watch('customVehicleName');
+  const watchedCustomService = watch('customServiceType');
   const selectedPackage = allPackages.find(pkg => pkg.id === watchedPackage);
 
   const timeSlots = [
@@ -43,13 +44,23 @@ const MultiStepBooking: React.FC = () => {
 
   const onSubmit = (data: BookingForm) => {
     const selectedBranch = BRANCHES.find(b => b.id === data.branch);
-    const selectedPackageData = allPackages.find(p => p.id === data.package);
+    let packageTitle = 'Not selected';
+    let vehicleModel = 'Not specified';
+    
+    if (data.package === 'custom') {
+      packageTitle = `Custom Service - ${data.customServiceType || 'Service'}`;
+      vehicleModel = data.customVehicleName || 'Custom Vehicle';
+    } else {
+      const selectedPackageData = allPackages.find(p => p.id === data.package);
+      packageTitle = selectedPackageData?.title || 'Not selected';
+      vehicleModel = selectedPackageData?.vehicleModels[0] || 'Not specified';
+    }
     
     const message = `Eco Touch Booking:
     
 Name: ${data.name}
-Package: ${selectedPackageData?.title || 'Not selected'}
-Vehicle: ${selectedPackageData?.vehicleModels[0] || 'Not specified'}
+Package: ${packageTitle}
+Vehicle: ${vehicleModel}
 Branch: ${selectedBranch?.name || 'Not selected'}
 Date: ${data.date}
 Time: ${data.time}
@@ -66,6 +77,9 @@ Please confirm this booking. Thank you!`;
     
     if (step === 1) {
       fieldsToValidate = ['package', 'name', 'whatsapp', 'branch'];
+      if (watchedPackage === 'custom') {
+        fieldsToValidate.push('customVehicleName', 'customServiceType');
+      }
     } else if (step === 2) {
       fieldsToValidate = ['date', 'time'];
     }
@@ -81,8 +95,13 @@ Please confirm this booking. Thank you!`;
 
   // Check if current step is valid
   const formValues = watch();
+  const isCustomPackageValid = watchedPackage === 'custom' ? 
+    (watchedCustomVehicle && watchedCustomService && 
+     !errors.customVehicleName && !errors.customServiceType) : true;
+  
   const isStep1Valid = formValues.package && formValues.name && formValues.whatsapp && formValues.branch && 
-                      Object.keys(errors).filter(key => ['package', 'name', 'whatsapp', 'branch'].includes(key)).length === 0;
+                      isCustomPackageValid &&
+                      Object.keys(errors).filter(key => ['package', 'name', 'whatsapp', 'branch', 'customVehicleName', 'customServiceType'].includes(key)).length === 0;
   const isStep2Valid = formValues.date && formValues.time && !errors.date && !errors.time;
 
   const handleOtherPackageSelect = async (packageId: string) => {
@@ -90,6 +109,14 @@ Please confirm this booking. Thank you!`;
     setValue('package', packageId, { shouldValidate: true, shouldDirty: true });
     setIsOtherPackagesOpen(false);
     clearErrors('package');
+    
+    // Clear custom fields if not selecting custom
+    if (packageId !== 'custom') {
+      setValue('customVehicleName', '');
+      setValue('customServiceType', '');
+      clearErrors('customVehicleName');
+      clearErrors('customServiceType');
+    }
     
     // Force validation and form state update
     await trigger('package');
@@ -100,9 +127,19 @@ Please confirm this booking. Thank you!`;
     console.log('Current form values:', formValues);
   };
 
-  // Check if selected package is from other packages
-  const isOtherPackageSelected = OTHER_PACKAGES.some(pkg => pkg.id === watchedPackage);
+  // Check if selected package is from other packages or custom
+  const isOtherPackageSelected = OTHER_PACKAGES.some(pkg => pkg.id === watchedPackage) || watchedPackage === 'custom';
   const selectedOtherPackage = OTHER_PACKAGES.find(pkg => pkg.id === watchedPackage);
+
+  const getDropdownDisplayText = () => {
+    if (watchedPackage === 'custom') {
+      return 'Custom/Tailored Package';
+    }
+    if (selectedOtherPackage) {
+      return `${selectedOtherPackage.title} - LKR ${selectedOtherPackage.priceLKR.toLocaleString()}`;
+    }
+    return 'Select a vehicle package';
+  };
 
   return (
     <div className="py-20">
@@ -206,6 +243,11 @@ Please confirm this booking. Thank you!`;
                                 onChange={(e) => {
                                   setValue('package', e.target.value, { shouldValidate: true, shouldDirty: true });
                                   clearErrors('package');
+                                  // Clear custom fields when selecting premium package
+                                  setValue('customVehicleName', '');
+                                  setValue('customServiceType', '');
+                                  clearErrors('customVehicleName');
+                                  clearErrors('customServiceType');
                                 }}
                                 className="sr-only"
                               />
@@ -240,7 +282,7 @@ Please confirm this booking. Thank you!`;
                             }`}
                           >
                             <span className="text-left">
-                              {selectedOtherPackage ? `${selectedOtherPackage.title} - LKR ${selectedOtherPackage.priceLKR.toLocaleString()}` : 'Select a vehicle package'}
+                              {getDropdownDisplayText()}
                             </span>
                             <ChevronDown 
                               className={`h-4 w-4 transition-transform duration-200 ${isOtherPackagesOpen ? 'rotate-180' : ''}`} 
@@ -249,12 +291,26 @@ Please confirm this booking. Thank you!`;
 
                           {isOtherPackagesOpen && (
                             <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 rounded-eco shadow-lg z-50 max-h-60 overflow-y-auto">
+                              {/* Custom Package Option */}
+                              <button
+                                type="button"
+                                onClick={() => handleOtherPackageSelect('custom')}
+                                className="w-full text-left px-4 py-3 text-eco-white hover:bg-gray-700 transition-colors duration-150 first:rounded-t-eco flex items-center space-x-3"
+                              >
+                                <Settings className="w-8 h-6 text-eco-green" />
+                                <div className="flex-1">
+                                  <div className="font-semibold">Custom/Tailored Package</div>
+                                  <div className="text-eco-green text-sm">Contact for pricing</div>
+                                </div>
+                              </button>
+                              
+                              {/* Existing Other Packages */}
                               {OTHER_PACKAGES.map((pkg) => (
                                 <button
                                   key={pkg.id}
                                   type="button"
                                   onClick={() => handleOtherPackageSelect(pkg.id)}
-                                  className="w-full text-left px-4 py-3 text-eco-white hover:bg-gray-700 transition-colors duration-150 first:rounded-t-eco last:rounded-b-eco flex items-center space-x-3"
+                                  className="w-full text-left px-4 py-3 text-eco-white hover:bg-gray-700 transition-colors duration-150 last:rounded-b-eco flex items-center space-x-3"
                                 >
                                   <img 
                                     src={pkg.heroImage} 
@@ -271,6 +327,50 @@ Please confirm this booking. Thank you!`;
                           )}
                         </div>
                       </div>
+
+                      {/* Custom Package Fields */}
+                      {watchedPackage === 'custom' && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-800/50 rounded-eco border border-eco-green/30"
+                        >
+                          <div className="space-y-2">
+                            <label className="text-eco-white font-medium text-sm">
+                              Vehicle Name/Model
+                            </label>
+                            <input
+                              type="text"
+                              {...register('customVehicleName', { 
+                                required: watchedPackage === 'custom' ? 'Vehicle name is required' : false 
+                              })}
+                              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-eco text-eco-white focus:outline-none focus:border-eco-green focus:ring-2 focus:ring-eco-green/20"
+                              placeholder="e.g., Honda Civic, BMW X5"
+                            />
+                            {errors.customVehicleName && (
+                              <p className="text-red-400 text-sm">{errors.customVehicleName.message}</p>
+                            )}
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="text-eco-white font-medium text-sm">
+                              Service Type
+                            </label>
+                            <input
+                              type="text"
+                              {...register('customServiceType', { 
+                                required: watchedPackage === 'custom' ? 'Service type is required' : false 
+                              })}
+                              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-eco text-eco-white focus:outline-none focus:border-eco-green focus:ring-2 focus:ring-eco-green/20"
+                              placeholder="e.g., Full Service, Oil Change, Detailing"
+                            />
+                            {errors.customServiceType && (
+                              <p className="text-red-400 text-sm">{errors.customServiceType.message}</p>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
                       
                       {errors.package && (
                         <p className="text-red-400 text-sm">{errors.package.message}</p>
@@ -466,7 +566,11 @@ Please confirm this booking. Thank you!`;
                           <strong className="text-eco-leaf">Phone:</strong> {watch('whatsapp')}
                         </div>
                         <div>
-                          <strong className="text-eco-leaf">Vehicle:</strong> {selectedPackage?.vehicleModels[0]}
+                          <strong className="text-eco-leaf">Vehicle:</strong>{' '}
+                          {watchedPackage === 'custom' 
+                            ? (watchedCustomVehicle || 'Custom Vehicle')
+                            : (selectedPackage?.vehicleModels[0] || 'Not specified')
+                          }
                         </div>
                         <div>
                           <strong className="text-eco-leaf">Branch:</strong>{' '}
@@ -480,17 +584,29 @@ Please confirm this booking. Thank you!`;
                         </div>
                       </div>
 
-                      {selectedPackage && (
-                        <div className="border-t border-gray-600 pt-4">
-                          <h3 className="text-lg font-semibold text-eco-white mb-2">
-                            Selected Package: {selectedPackage.title}
-                          </h3>
-                          <p className="text-eco-white/70 mb-2">{selectedPackage.description}</p>
-                          <p className="text-eco-green font-bold text-xl">
-                            Price: LKR {selectedPackage.priceLKR.toLocaleString()}
-                          </p>
-                        </div>
-                      )}
+                      <div className="border-t border-gray-600 pt-4">
+                        {watchedPackage === 'custom' ? (
+                          <div>
+                            <h3 className="text-lg font-semibold text-eco-white mb-2">
+                              Selected Package: Custom Service - {watchedCustomService || 'Service'}
+                            </h3>
+                            <p className="text-eco-white/70 mb-2">Tailored service for your specific needs</p>
+                            <p className="text-eco-green font-bold text-xl">
+                              Price: Contact for quote
+                            </p>
+                          </div>
+                        ) : selectedPackage ? (
+                          <div>
+                            <h3 className="text-lg font-semibold text-eco-white mb-2">
+                              Selected Package: {selectedPackage.title}
+                            </h3>
+                            <p className="text-eco-white/70 mb-2">{selectedPackage.description}</p>
+                            <p className="text-eco-green font-bold text-xl">
+                              Price: LKR {selectedPackage.priceLKR.toLocaleString()}
+                            </p>
+                          </div>
+                        ) : null}
+                      </div>
                     </div>
 
                     <div className="bg-gray-800 rounded-eco p-4">
