@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -86,12 +87,17 @@ Please confirm this booking. Thank you!`;
 
   const handleOtherPackageSelect = async (packageId: string) => {
     console.log('Selecting other package:', packageId);
-    setValue('package', packageId);
+    setValue('package', packageId, { shouldValidate: true, shouldDirty: true });
     setIsOtherPackagesOpen(false);
     clearErrors('package');
-    const isValid = await trigger('package');
-    console.log('Package validation result:', isValid);
+    
+    // Force validation and form state update
+    await trigger('package');
+    await trigger(['name', 'whatsapp', 'branch']); // Re-validate all step 1 fields
+    
+    console.log('Package validation result for:', packageId);
     console.log('Form errors after selection:', errors);
+    console.log('Current form values:', formValues);
   };
 
   // Check if selected package is from other packages
@@ -172,6 +178,12 @@ Please confirm this booking. Thank you!`;
                         <span>Select Package</span>
                       </label>
                       
+                      {/* Hidden input for form validation */}
+                      <input
+                        type="hidden"
+                        {...register('package', { required: 'Please select a package' })}
+                      />
+                      
                       {/* Premium Packages */}
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-eco-leaf mb-3">Premium Packages</h3>
@@ -190,7 +202,11 @@ Please confirm this booking. Thank you!`;
                               <input
                                 type="radio"
                                 value={pkg.id}
-                                {...register('package', { required: 'Please select a package' })}
+                                checked={watchedPackage === pkg.id}
+                                onChange={(e) => {
+                                  setValue('package', e.target.value, { shouldValidate: true, shouldDirty: true });
+                                  clearErrors('package');
+                                }}
                                 className="sr-only"
                               />
                               <div className="flex items-center space-x-3">
