@@ -9,12 +9,13 @@ import { BRANCHES } from '../data/branches';
 import Reveal from './ui/Reveal';
 import { CardGlow } from './shared/CardGlow';
 import { IconArrowBtn } from './shared/IconArrowBtn';
-import { Calendar, Clock, MapPin, Phone, User, Package } from 'lucide-react';
+import { Calendar, Clock, MapPin, Phone, User, Package, ChevronDown } from 'lucide-react';
 
 const MultiStepBooking: React.FC = () => {
   const location = useLocation();
   const selectedPackageId = location.state?.selectedPackage;
   const [step, setStep] = useState(1);
+  const [isOtherPackagesOpen, setIsOtherPackagesOpen] = useState(false);
   
   const allPackages = [...PREMIUM_PACKAGES, ...OTHER_PACKAGES];
   
@@ -33,6 +34,7 @@ const MultiStepBooking: React.FC = () => {
 
   const watchedPackage = watch('package');
   const selectedPackage = allPackages.find(pkg => pkg.id === watchedPackage);
+  const selectedOtherPackage = OTHER_PACKAGES.find(pkg => pkg.id === watchedPackage);
 
   const timeSlots = [
     '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'
@@ -79,6 +81,11 @@ Please confirm this booking. Thank you!`;
   // Check if current step is valid
   const isStep1Valid = watch('package') && watch('name') && watch('whatsapp') && watch('branch');
   const isStep2Valid = watch('date') && watch('time');
+
+  const handleOtherPackageSelect = (packageId: string) => {
+    setValue('package', packageId);
+    setIsOtherPackagesOpen(false);
+  };
 
   return (
     <div className="py-20">
@@ -194,43 +201,45 @@ Please confirm this booking. Thank you!`;
                         </div>
                       </div>
 
-                      {/* Other Packages */}
-                      <div>
+                      {/* Other Vehicle Packages Dropdown */}
+                      <div className="mb-6">
                         <h3 className="text-lg font-semibold text-eco-leaf mb-3">Other Vehicle Packages</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-80 overflow-y-auto custom-scrollbar">
-                          {OTHER_PACKAGES.map((pkg) => (
-                            <motion.label
-                              key={pkg.id}
-                              className={`cursor-pointer rounded-eco p-4 border-2 transition-all duration-300 ${
-                                watchedPackage === pkg.id
-                                  ? 'border-eco-green bg-eco-green/10'
-                                  : 'border-gray-600 hover:border-eco-leaf/50'
-                              }`}
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                            >
-                              <input
-                                type="radio"
-                                value={pkg.id}
-                                {...register('package', { required: 'Please select a package' })}
-                                className="sr-only"
-                              />
-                              <div className="flex items-center space-x-3">
-                                <img 
-                                  src={pkg.heroImage} 
-                                  alt={pkg.title}
-                                  className="w-16 h-12 object-contain"
-                                />
-                                <div className="flex-1">
-                                  <h4 className="font-semibold text-eco-white">{pkg.title}</h4>
-                                  <p className="text-sm text-eco-white/70">{pkg.description}</p>
-                                  <p className="text-eco-green font-bold">
-                                    LKR {pkg.priceLKR.toLocaleString()}
-                                  </p>
-                                </div>
-                              </div>
-                            </motion.label>
-                          ))}
+                        <div className="relative">
+                          <button
+                            type="button"
+                            onClick={() => setIsOtherPackagesOpen(!isOtherPackagesOpen)}
+                            className="w-full bg-gray-800 border border-gray-600 rounded-eco px-4 py-3 text-eco-white focus:border-eco-green focus:ring-2 focus:ring-eco-green/20 transition-all duration-200 flex items-center justify-between hover:bg-gray-750"
+                          >
+                            <span className="text-left">
+                              {selectedOtherPackage ? `${selectedOtherPackage.title} - LKR ${selectedOtherPackage.priceLKR.toLocaleString()}` : 'Select a vehicle package'}
+                            </span>
+                            <ChevronDown 
+                              className={`h-4 w-4 transition-transform duration-200 ${isOtherPackagesOpen ? 'rotate-180' : ''}`} 
+                            />
+                          </button>
+
+                          {isOtherPackagesOpen && (
+                            <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 rounded-eco shadow-lg z-50 max-h-60 overflow-y-auto">
+                              {OTHER_PACKAGES.map((pkg) => (
+                                <button
+                                  key={pkg.id}
+                                  type="button"
+                                  onClick={() => handleOtherPackageSelect(pkg.id)}
+                                  className="w-full text-left px-4 py-3 text-eco-white hover:bg-gray-700 transition-colors duration-150 first:rounded-t-eco last:rounded-b-eco flex items-center space-x-3"
+                                >
+                                  <img 
+                                    src={pkg.heroImage} 
+                                    alt={pkg.title}
+                                    className="w-12 h-8 object-contain"
+                                  />
+                                  <div className="flex-1">
+                                    <div className="font-semibold">{pkg.title}</div>
+                                    <div className="text-eco-green text-sm">LKR {pkg.priceLKR.toLocaleString()}</div>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                       
