@@ -163,19 +163,19 @@ const Hero = () => {
             </Reveal>
           </div>
 
-          {/* Right Content - YouTube Video for Desktop */}
+          {/* Right Content - Local Video for Desktop */}
           <Reveal delay={900} className="hidden lg:block">
             <div className="relative rounded-eco overflow-hidden w-full aspect-video">
-              <iframe
-                src="https://www.youtube.com/embed/hX2xVO4FE4s?autoplay=1&mute=1&loop=1&playlist=hX2xVO4FE4s&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&branding=0&cc_load_policy=0&fs=0"
-                width="100%"
-                height="100%"
-                style={{ border: 'none', display: 'block' }}
-                frameBorder="0"
-                allow="autoplay; encrypted-media"
-                title="ECO TOUCH Premium Automotive Care Services"
-                className="pointer-events-none absolute inset-0"
-              ></iframe>
+              <video
+                className="w-full h-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              >
+                <source src="/videos/eco_touch_cover.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </Reveal>
         </div>
@@ -190,16 +190,16 @@ const Hero = () => {
               transition={{ duration: 1, delay: 1.4 }}
             />
             <div className="relative rounded-eco overflow-hidden aspect-video">
-              <iframe
-                src="https://www.youtube.com/embed/hX2xVO4FE4s?autoplay=1&mute=1&loop=1&playlist=hX2xVO4FE4s&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&branding=0&cc_load_policy=0&fs=0"
-                width="100%"
-                height="100%"
-                style={{ border: 'none', display: 'block' }}
-                frameBorder="0"
-                allow="autoplay; encrypted-media"
-                title="ECO TOUCH Premium Automotive Care Services"
-                className="pointer-events-none absolute inset-0"
-              ></iframe>
+              <video
+                className="w-full h-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              >
+                <source src="/videos/eco_touch_cover.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
         </Reveal>
