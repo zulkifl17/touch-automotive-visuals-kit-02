@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -30,7 +29,7 @@ const MultiStepBooking: React.FC = () => {
   React.useEffect(() => {
     if (selectedPackageId) {
       setValue('package', selectedPackageId);
-      trigger('package'); // Trigger validation after setting value
+      trigger('package');
     }
   }, [selectedPackageId, setValue, trigger]);
 
@@ -87,10 +86,10 @@ Please confirm this booking. Thank you!`;
   const handleOtherPackageSelect = async (packageId: string) => {
     setValue('package', packageId);
     setIsOtherPackagesOpen(false);
-    // Clear any existing package errors and trigger validation
+    // Clear package error and trigger validation
     clearErrors('package');
     await trigger('package');
-    console.log('Package selected:', packageId);
+    console.log('Other package selected:', packageId);
   };
 
   // Check if selected package is from other packages
@@ -114,7 +113,7 @@ Please confirm this booking. Thank you!`;
           <div className="mb-12">
             <div className="flex justify-center items-center space-x-4">
               {[1, 2, 3].map((stepNumber) => (
-                <React.Fragment key={stepNumber}>
+                <div key={stepNumber} className="flex items-center">
                   <motion.div
                     className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
                       step >= stepNumber
@@ -127,12 +126,12 @@ Please confirm this booking. Thank you!`;
                   </motion.div>
                   {stepNumber < 3 && (
                     <div
-                      className={`w-12 h-1 ${
+                      className={`w-12 h-1 ml-4 ${
                         step > stepNumber ? 'bg-eco-green' : 'bg-gray-600'
                       }`}
                     />
                   )}
-                </React.Fragment>
+                </div>
               ))}
             </div>
             <div className="flex justify-center mt-4 space-x-16">
@@ -191,12 +190,11 @@ Please confirm this booking. Thank you!`;
                                 value={pkg.id}
                                 {...register('package', { required: 'Please select a package' })}
                                 className="sr-only"
-                                onChange={(e) => {
-                                  // Handle premium package selection
+                                onChange={async (e) => {
                                   const value = e.target.value;
                                   setValue('package', value);
                                   clearErrors('package');
-                                  trigger('package');
+                                  await trigger('package');
                                   console.log('Premium package selected:', value);
                                 }}
                               />
@@ -339,7 +337,6 @@ Please confirm this booking. Thank you!`;
                         onClick={nextStep}
                         variant="primary"
                         className={!isStep1Valid ? 'opacity-50 cursor-not-allowed' : ''}
-                        disabled={!isStep1Valid}
                       >
                         Next Step
                       </IconArrowBtn>
