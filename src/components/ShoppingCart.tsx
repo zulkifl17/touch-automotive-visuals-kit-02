@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, X, Plus, Minus, Trash2 } from 'lucide-react';
+import { ShoppingCart as CartIcon, X, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 
 const ShoppingCart: React.FC = () => {
@@ -52,7 +52,7 @@ Thank you for choosing ECO TOUCH! 🌿`;
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
-        <ShoppingCart className="w-6 h-6" />
+        <CartIcon className="w-6 h-6" />
         {state.items.length > 0 && (
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
             {state.items.reduce((acc, item) => acc + item.quantity, 0)}
@@ -92,7 +92,7 @@ Thank you for choosing ECO TOUCH! 🌿`;
 
               {state.items.length === 0 ? (
                 <div className="text-center py-8">
-                  <ShoppingCart className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                  <CartIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
                   <p className="text-gray-400">Your cart is empty</p>
                 </div>
               ) : (
