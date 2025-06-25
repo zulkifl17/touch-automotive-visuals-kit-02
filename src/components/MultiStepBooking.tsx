@@ -34,7 +34,6 @@ const MultiStepBooking: React.FC = () => {
 
   const watchedPackage = watch('package');
   const selectedPackage = allPackages.find(pkg => pkg.id === watchedPackage);
-  const selectedOtherPackage = OTHER_PACKAGES.find(pkg => pkg.id === watchedPackage);
 
   const timeSlots = [
     '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'
@@ -85,7 +84,13 @@ Please confirm this booking. Thank you!`;
   const handleOtherPackageSelect = (packageId: string) => {
     setValue('package', packageId);
     setIsOtherPackagesOpen(false);
+    // Trigger validation after setting value
+    trigger('package');
   };
+
+  // Check if selected package is from other packages
+  const isOtherPackageSelected = OTHER_PACKAGES.some(pkg => pkg.id === watchedPackage);
+  const selectedOtherPackage = OTHER_PACKAGES.find(pkg => pkg.id === watchedPackage);
 
   return (
     <div className="py-20">
@@ -208,7 +213,9 @@ Please confirm this booking. Thank you!`;
                           <button
                             type="button"
                             onClick={() => setIsOtherPackagesOpen(!isOtherPackagesOpen)}
-                            className="w-full bg-gray-800 border border-gray-600 rounded-eco px-4 py-3 text-eco-white focus:border-eco-green focus:ring-2 focus:ring-eco-green/20 transition-all duration-200 flex items-center justify-between hover:bg-gray-750"
+                            className={`w-full bg-gray-800 border-2 rounded-eco px-4 py-3 text-eco-white focus:border-eco-green focus:ring-2 focus:ring-eco-green/20 transition-all duration-200 flex items-center justify-between hover:bg-gray-750 ${
+                              isOtherPackageSelected ? 'border-eco-green bg-eco-green/10' : 'border-gray-600'
+                            }`}
                           >
                             <span className="text-left">
                               {selectedOtherPackage ? `${selectedOtherPackage.title} - LKR ${selectedOtherPackage.priceLKR.toLocaleString()}` : 'Select a vehicle package'}
