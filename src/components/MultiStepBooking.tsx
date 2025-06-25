@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -30,7 +29,7 @@ const MultiStepBooking: React.FC = () => {
   React.useEffect(() => {
     if (selectedPackageId) {
       setValue('package', selectedPackageId);
-      trigger('package'); // Trigger validation after setting value
+      trigger('package');
     }
   }, [selectedPackageId, setValue, trigger]);
 
@@ -79,18 +78,20 @@ Please confirm this booking. Thank you!`;
   
   const prevStep = () => setStep(step - 1);
 
-  // Check if current step is valid using form state
+  // Check if current step is valid
   const formValues = watch();
-  const isStep1Valid = formValues.package && formValues.name && formValues.whatsapp && formValues.branch && !errors.package && !errors.name && !errors.whatsapp && !errors.branch;
+  const isStep1Valid = formValues.package && formValues.name && formValues.whatsapp && formValues.branch && 
+                      Object.keys(errors).filter(key => ['package', 'name', 'whatsapp', 'branch'].includes(key)).length === 0;
   const isStep2Valid = formValues.date && formValues.time && !errors.date && !errors.time;
 
   const handleOtherPackageSelect = async (packageId: string) => {
+    console.log('Selecting other package:', packageId);
     setValue('package', packageId);
     setIsOtherPackagesOpen(false);
-    // Clear any existing package errors and trigger validation
     clearErrors('package');
-    await trigger('package');
-    console.log('Package selected:', packageId);
+    const isValid = await trigger('package');
+    console.log('Package validation result:', isValid);
+    console.log('Form errors after selection:', errors);
   };
 
   // Check if selected package is from other packages
@@ -114,7 +115,7 @@ Please confirm this booking. Thank you!`;
           <div className="mb-12">
             <div className="flex justify-center items-center space-x-4">
               {[1, 2, 3].map((stepNumber) => (
-                <React.Fragment key={stepNumber}>
+                <div key={stepNumber} className="flex items-center">
                   <motion.div
                     className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
                       step >= stepNumber
@@ -132,7 +133,7 @@ Please confirm this booking. Thank you!`;
                       }`}
                     />
                   )}
-                </React.Fragment>
+                </div>
               ))}
             </div>
             <div className="flex justify-center mt-4 space-x-16">
@@ -191,14 +192,6 @@ Please confirm this booking. Thank you!`;
                                 value={pkg.id}
                                 {...register('package', { required: 'Please select a package' })}
                                 className="sr-only"
-                                onChange={(e) => {
-                                  // Handle premium package selection
-                                  const value = e.target.value;
-                                  setValue('package', value);
-                                  clearErrors('package');
-                                  trigger('package');
-                                  console.log('Premium package selected:', value);
-                                }}
                               />
                               <div className="flex items-center space-x-3">
                                 <img 
@@ -337,9 +330,7 @@ Please confirm this booking. Thank you!`;
                       <IconArrowBtn
                         type="button"
                         onClick={nextStep}
-                        variant="primary"
-                        className={!isStep1Valid ? 'opacity-50 cursor-not-allowed' : ''}
-                        disabled={!isStep1Valid}
+                        variant={isStep1Valid ? "primary" : "secondary"}
                       >
                         Next Step
                       </IconArrowBtn>
@@ -427,8 +418,7 @@ Please confirm this booking. Thank you!`;
                       <IconArrowBtn
                         type="button"
                         onClick={nextStep}
-                        variant="primary"
-                        className={!isStep2Valid ? 'opacity-50 cursor-not-allowed' : ''}
+                        variant={isStep2Valid ? "primary" : "secondary"}
                       >
                         Review Booking
                       </IconArrowBtn>
