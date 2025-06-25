@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -19,7 +20,7 @@ const MultiStepBooking: React.FC = () => {
   
   const allPackages = [...PREMIUM_PACKAGES, ...OTHER_PACKAGES];
   
-  const { register, handleSubmit, formState: { errors, isValid }, watch, setValue, trigger } = useForm<BookingForm>({
+  const { register, handleSubmit, formState: { errors, isValid }, watch, setValue, trigger, clearErrors } = useForm<BookingForm>({
     mode: 'onChange',
     defaultValues: {
       package: selectedPackageId || '',
@@ -29,8 +30,9 @@ const MultiStepBooking: React.FC = () => {
   React.useEffect(() => {
     if (selectedPackageId) {
       setValue('package', selectedPackageId);
+      trigger('package'); // Trigger validation after setting value
     }
-  }, [selectedPackageId, setValue]);
+  }, [selectedPackageId, setValue, trigger]);
 
   const watchedPackage = watch('package');
   const selectedPackage = allPackages.find(pkg => pkg.id === watchedPackage);
@@ -77,15 +79,18 @@ Please confirm this booking. Thank you!`;
   
   const prevStep = () => setStep(step - 1);
 
-  // Check if current step is valid
-  const isStep1Valid = watch('package') && watch('name') && watch('whatsapp') && watch('branch');
-  const isStep2Valid = watch('date') && watch('time');
+  // Check if current step is valid using form state
+  const formValues = watch();
+  const isStep1Valid = formValues.package && formValues.name && formValues.whatsapp && formValues.branch && !errors.package && !errors.name && !errors.whatsapp && !errors.branch;
+  const isStep2Valid = formValues.date && formValues.time && !errors.date && !errors.time;
 
-  const handleOtherPackageSelect = (packageId: string) => {
+  const handleOtherPackageSelect = async (packageId: string) => {
     setValue('package', packageId);
     setIsOtherPackagesOpen(false);
-    // Trigger validation after setting value
-    trigger('package');
+    // Clear any existing package errors and trigger validation
+    clearErrors('package');
+    await trigger('package');
+    console.log('Package selected:', packageId);
   };
 
   // Check if selected package is from other packages
@@ -186,6 +191,14 @@ Please confirm this booking. Thank you!`;
                                 value={pkg.id}
                                 {...register('package', { required: 'Please select a package' })}
                                 className="sr-only"
+                                onChange={(e) => {
+                                  // Handle premium package selection
+                                  const value = e.target.value;
+                                  setValue('package', value);
+                                  clearErrors('package');
+                                  trigger('package');
+                                  console.log('Premium package selected:', value);
+                                }}
                               />
                               <div className="flex items-center space-x-3">
                                 <img 
@@ -326,6 +339,7 @@ Please confirm this booking. Thank you!`;
                         onClick={nextStep}
                         variant="primary"
                         className={!isStep1Valid ? 'opacity-50 cursor-not-allowed' : ''}
+                        disabled={!isStep1Valid}
                       >
                         Next Step
                       </IconArrowBtn>
