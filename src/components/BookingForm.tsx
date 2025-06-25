@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, MapPin, User, Package, Phone, ChevronDown } from 'lucide-react';
+import { Calendar, Clock, MapPin, User, Package, Phone } from 'lucide-react';
 import { BookingForm as BookingFormType } from '../types';
 import { PREMIUM_PACKAGES } from '../data/packages';
 import { OTHER_PACKAGES } from '../data/otherPackages';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from './ui/dropdown-menu';
+import CustomDropdown from './CustomDropdown';
 
 const BookingForm = () => {
   const [formData, setFormData] = useState<BookingFormType>({
@@ -23,7 +18,6 @@ const BookingForm = () => {
   });
 
   const allPackages = [...PREMIUM_PACKAGES, ...OTHER_PACKAGES];
-  const selectedOtherPackage = OTHER_PACKAGES.find(pkg => pkg.id === formData.package);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +35,13 @@ WhatsApp: ${formData.whatsapp}`;
     const whatsappUrl = `https://wa.me/94771234567?text=${encodeURIComponent(message)}`;
     window.location.href = whatsappUrl;
   };
+
+  // Prepare dropdown options for other packages
+  const otherPackageOptions = OTHER_PACKAGES.map(pkg => ({
+    id: pkg.id,
+    label: `${pkg.title} - LKR ${pkg.priceLKR.toLocaleString()}`,
+    value: pkg.id
+  }));
 
   return (
     <section className="py-20 px-6 bg-gradient-to-b from-gray-900 to-eco-dark">
@@ -102,28 +103,12 @@ WhatsApp: ${formData.whatsapp}`;
                 <Package className="inline w-4 h-4 mr-2" />
                 Other Vehicle Packages
               </label>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="w-full bg-gray-800 border border-gray-600 rounded-eco px-4 py-3 text-eco-white focus:border-eco-blue focus:ring-2 focus:ring-eco-blue/20 transition-all duration-200 flex items-center justify-between">
-                  <span>
-                    {selectedOtherPackage 
-                      ? `${selectedOtherPackage.title} - LKR ${selectedOtherPackage.priceLKR.toLocaleString()}`
-                      : 'Select a vehicle package'
-                    }
-                  </span>
-                  <ChevronDown className="h-4 w-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full bg-gray-800 border border-gray-600 rounded-eco z-50">
-                  {OTHER_PACKAGES.map((pkg) => (
-                    <DropdownMenuItem
-                      key={pkg.id}
-                      onClick={() => setFormData({ ...formData, package: pkg.id })}
-                      className="text-eco-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer"
-                    >
-                      {pkg.title} - LKR {pkg.priceLKR.toLocaleString()}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <CustomDropdown
+                options={otherPackageOptions}
+                value={formData.package}
+                placeholder="Select a vehicle package"
+                onSelect={(value) => setFormData({ ...formData, package: value })}
+              />
             </div>
 
             <div className="grid lg:grid-cols-2 gap-6">
