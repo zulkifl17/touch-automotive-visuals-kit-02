@@ -68,7 +68,7 @@ WhatsApp: ${data.whatsapp}
 
 Please confirm this booking. Thank you!`;
 
-    const whatsappUrl = `https://wa.me/+94765353503?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/+94712888444?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 

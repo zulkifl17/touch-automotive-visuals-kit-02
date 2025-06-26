@@ -35,7 +35,7 @@ ${orderDetails}
 
 Thank you for choosing ECO TOUCH! 🌿`;
 
-    const whatsappUrl = `https://wa.me/94771234567?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/+94712888444?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
     
     // Clear cart after checkout
