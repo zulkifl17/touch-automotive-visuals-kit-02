@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Leaf, Phone, Mail, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const NewFooter: React.FC = () => {
@@ -12,10 +12,11 @@ const NewFooter: React.FC = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <Leaf className="h-8 w-8 text-eco-leaf" />
-              <span className="text-xl font-bold font-montserrat tracking-widest text-eco-white">
-                ECO TOUCH
-              </span>
+              <img 
+                src="/lovable-uploads/6ded344e-365a-482a-b149-be54e9d3130f.png" 
+                alt="ECO TOUCH Logo"
+                className="h-8 w-auto object-contain"
+              />
             </div>
             <p className="text-eco-white/80 text-sm leading-relaxed">
               Premium eco-friendly car wash and auto-care services with cutting-edge technology and sustainable practices.
@@ -97,7 +98,7 @@ const NewFooter: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-eco-leaf" />
-                <span className="text-eco-white/80 text-sm">+94 77 123 4567</span>
+                <span className="text-eco-white/80 text-sm">+94 71 288 8444</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-eco-leaf" />

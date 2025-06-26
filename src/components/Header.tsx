@@ -73,7 +73,7 @@ const Header: React.FC = () => {
               </Link>
             ))}
             <a
-              href="tel:+94771234567"
+              href="tel:+94712888444"
               className="flex items-center space-x-1 text-eco-green hover:text-eco-leaf transition-colors duration-200"
             >
               <Phone size={16} />
@@ -118,7 +118,7 @@ const Header: React.FC = () => {
                   </Link>
                 ))}
                 <a
-                  href="tel:+94771234567"
+                  href="tel:+94712888444"
                   className="flex items-center space-x-2 px-3 py-2 text-eco-green hover:text-eco-leaf transition-colors duration-200"
                 >
                   <Phone size={16} />
