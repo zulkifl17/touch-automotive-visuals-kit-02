@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
@@ -22,9 +23,7 @@ const NewFooter: React.FC = () => {
             </p>
             <div className="flex space-x-4">
               <motion.a
-                href="https://web.facebook.com/ecotouch.lk"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#"
                 className="text-eco-white/60 hover:text-eco-leaf transition-colors duration-200"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
@@ -32,9 +31,7 @@ const NewFooter: React.FC = () => {
                 <Facebook size={20} />
               </motion.a>
               <motion.a
-                href="https://www.instagram.com/ecotouch.lk/"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#"
                 className="text-eco-white/60 hover:text-eco-leaf transition-colors duration-200"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
