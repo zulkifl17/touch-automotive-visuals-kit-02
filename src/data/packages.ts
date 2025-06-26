@@ -2,11 +2,11 @@ import { ServicePackage } from '../types';
 
 export const PACKAGE_CHR: ServicePackage = {
   id: 'full-service-chr',
-  title: 'Full Service – Toyota C‑HR',
-  vehicleModels: ['Toyota C-HR'],
-  priceLKR: 19900,
+  title: 'Full Service –Diamond Shine Package',
+  vehicleModels: ['Renault Kwid','Viva ELITE','Suzuki Celerio','KIA Picanto','Hyundai EON','Wagon R','Japan Alto','Suzuki Hustler'],
+  priceLKR: 15900,
   description: 'Full Service with Oil & Oil Filter (OEM brands)',
-  heroImage: '/img/packages/c-hr.webp',
+  heroImage: 'https://abtmaruti.com/image/catalog/model-colours/alto/Alto800_Blazing_Red_new%20(1).jpg',
   inclusions: [
     'Using original oil filter & Can Oil',
     'Engine degreasing',
@@ -27,11 +27,11 @@ export const PACKAGE_CHR: ServicePackage = {
 
 export const PACKAGE_AQUA: ServicePackage = {
   id: 'full-service-aqua',
-  title: 'Full Service – Toyota Aqua',
-  vehicleModels: ['Toyota Aqua', 'Toyota Prius'],
-  priceLKR: 17500,
+  title: 'Full Service – Platinum Protection Package',
+  vehicleModels: ['Toyota Aqua', 'Toyota Prius', 'Toyota Vitz', 'Toyota Passo', 'Honda Fit GP5', 'Honda Grace', 'Toyota Axio'],
+  priceLKR: 18900,
   description: 'Eco-Hybrid Full Service with Premium Care',
-  heroImage: '/img/packages/aqua.webp',
+  heroImage: 'https://www.toyota-global.com/company/history_of_toyota/75years/vehicle_lineage/car/id60017505/images/m1.png',
   inclusions: [
     'Hybrid system inspection',
     'Using original oil filter & Eco Oil',
